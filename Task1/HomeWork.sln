@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "Task1.csproj", "{C3E687C0-E173-4E04-A5DD-62C95DDBE3EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.ConsoleGameXO", "..\Task2.ConsoleGameXO\Task2.ConsoleGameXO.csproj", "{D978A7A9-BC34-4509-9929-5FBC133B07D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C3E687C0-E173-4E04-A5DD-62C95DDBE3EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3E687C0-E173-4E04-A5DD-62C95DDBE3EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3E687C0-E173-4E04-A5DD-62C95DDBE3EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D978A7A9-BC34-4509-9929-5FBC133B07D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D978A7A9-BC34-4509-9929-5FBC133B07D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D978A7A9-BC34-4509-9929-5FBC133B07D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D978A7A9-BC34-4509-9929-5FBC133B07D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
