@@ -119,7 +119,6 @@ namespace Task2.ConsoleGameXO
                 Console.WriteLine("Игра не запустилась(");
                 Console.WriteLine("Выключение...");
             }
-
         }
         public void PrintField(char[] field, int WhatMove) // Вывод игрового поля 
         {
@@ -170,7 +169,6 @@ namespace Task2.ConsoleGameXO
                     return Cell;
                 }
             }
-
         }
         public bool Move(User Player, ref char[] field) //Функция хода
         {
@@ -185,7 +183,6 @@ namespace Task2.ConsoleGameXO
                     {
                         Console.Write($"{FreeCells[i]}/");
                     }
-
                     if (int.TryParse(Console.ReadLine(), out int UserMove) && (UserMove >= 1 && UserMove <= 9))
                     {
                         if (field[UserMove - 1] == ' ')
@@ -200,7 +197,6 @@ namespace Task2.ConsoleGameXO
                             //return MoveFlag;
                             continue;
                         }
-
                     }
                     else
                     {
@@ -352,7 +348,6 @@ namespace Task2.ConsoleGameXO
             } while (!StartGameFlag);
             return StartGameFlag;
         }
-
         public bool WinCheck(char[] field, ref User II, ref User User)//Проверка на победу
         {
             bool WinFlag = false;
