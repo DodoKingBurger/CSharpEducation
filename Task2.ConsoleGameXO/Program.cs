@@ -14,8 +14,8 @@ namespace Task2.ConsoleGameXO
             public Char Char { get; set; }// 1 - X (Крестик), 2 - O (Нулик)
             public int HowHeWalks { get; set; } // Каким ходит экземпляр 1 или 2
 
-            public bool Wining { get; set; }
-            public string Name;
+            public bool Wining { get; set; } // Статус победителя 
+            public string Name; // Имя игрока 
             public User(string name)
             {
                 Name = name;
@@ -42,7 +42,7 @@ namespace Task2.ConsoleGameXO
                     Console.WriteLine("Не знаю таких войнов! АТАКУЮ!!!\nЕще раз...");
                     continue;
                 }
-            } while (NameSelected);
+            } while (!NameSelected);
             User II = new User("BILLY");
             II.Who = 2;
             char[] field = new char[9] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
@@ -121,25 +121,9 @@ namespace Task2.ConsoleGameXO
             }
 
         }
-        public void PrintField(char[] field, int WhatMove)
+        public void PrintField(char[] field, int WhatMove) // Вывод игрового поля 
         {
-            //string[] field = new string[9];
-            //for (int i = 0; i < field.Length; i++)
-            //{
-            //    if (Gamefield[i] == 0 || Gamefield[i] == null)
-            //    {
-            //        field[i] = " ";
-            //    }
-            //    else if (Gamefield[i] == 1)
-            //    { 
-            //        field[i] = "X"; 
-            //    }
-            //    else if (Gamefield[i] == 2)
-            //    {
-            //        field[i] = "O";
-            //    }
-            //}
-            if (WhatMove == 0)
+            if (WhatMove == 0) 
             {
                 Console.WriteLine($" ---Ход№{WhatMove}---");
                 Console.WriteLine($"Сейчас в ячейках их номера)");
@@ -188,7 +172,7 @@ namespace Task2.ConsoleGameXO
             }
 
         }
-        public bool Move(User Player, ref char[] field)
+        public bool Move(User Player, ref char[] field) //Функция хода
         {
             bool MoveFlag = false;
             while (!MoveFlag)
@@ -252,13 +236,13 @@ namespace Task2.ConsoleGameXO
                 return FreeCellsArray;
             }
         }
-        public void PrintStartGame()
+        public void PrintStartGame()//Начальная заставка
         {
             Console.WriteLine("__________________________________________________________________________________");
             Console.WriteLine("         WEEEEEEEELCOME! В ИГРУ КРЕСТИКИ И НОЛИКИ ИЛИ АНАБОЛИКИ, не важно");
             Console.WriteLine("----------------------------------------------------------------------------------");
         }
-        public int BotMove(User II, char[] field)
+        public int BotMove(User II, char[] field)//Алгоритм хода у Бота
         {
             int IndexBoteMove = ScrollField(II);
             Console.WriteLine($"Бот выбрал - {IndexBoteMove + 1}");
@@ -299,7 +283,7 @@ namespace Task2.ConsoleGameXO
                 return NextMove;
             }
         }
-        public bool WhoIsFirst(ref User II, ref User User)
+        public bool WhoIsFirst(ref User II, ref User User)// Функция для определения кто ходит первый (Игра Орел и Решка)
         {
             bool StartGameFlag = false;
             Random rnd = new Random();
@@ -369,17 +353,23 @@ namespace Task2.ConsoleGameXO
             return StartGameFlag;
         }
 
-        public bool WinCheck(char[] field, ref User II, ref User User)
+        public bool WinCheck(char[] field, ref User II, ref User User)//Проверка на победу
         {
             bool WinFlag = false;
 
-            if (ScrollField(ref User))
+            if (ScrollField(ref User) && !ScrollField(ref II))
             {
                 II.Wining = false;
             }
-            if (ScrollField(ref II))
+            else if (ScrollField(ref II) && !ScrollField(ref User))
             {
                 User.Wining = false;
+            }
+            else
+            {
+                User.Wining = false;
+                II.Wining = false;
+                return true;
             }
             bool ScrollField(ref User player)
             {
@@ -403,7 +393,7 @@ namespace Task2.ConsoleGameXO
             }
             return WinFlag;
         }
-        public void LetsCelebrate(User Player, User II)
+        public void LetsCelebrate(User Player, User II)// Поздравительное сообщение
         {
             if (Player.Wining)
             {
@@ -430,7 +420,7 @@ namespace Task2.ConsoleGameXO
                 Console.WriteLine(" --------------------------------------------------------------------- ");
             }
         }
-        public void LetsCelebrate()
+        public void LetsCelebrate()// Сообщение о ничьей 
         {
             PrintMessege();
 
@@ -447,7 +437,7 @@ namespace Task2.ConsoleGameXO
                 Console.WriteLine(" --------------------------------------------------------------------- ");
             }
         }
-        int[,] winCombo = new int[,]
+        int[,] winCombo = new int[,] // Набор выиграшных комбинаций
             {
                 {0,1,2},
                 {3,4,5},
