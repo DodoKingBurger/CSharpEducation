@@ -310,11 +310,12 @@ namespace Task2.ConsoleGameXO
 								II.Char = 'X';
 								II.HowHeWalks = 1;
 							}
-							else
-							{
-								Console.WriteLine("Я тебя не понял давай еще раз");
-								continue;
-							}
+
+						}							
+						else
+						{
+							Console.WriteLine("Я тебя не понял давай еще раз");
+							continue;
 						}
 					}
 					else
