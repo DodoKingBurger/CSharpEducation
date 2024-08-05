@@ -24,7 +24,6 @@ namespace Task2.ConsoleGameXO
 			char[] field = new char[9] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
 			Game.PrintStartGame();
 			Game.PrintField(field, 0);
-
 			Console.WriteLine("СТАРТ ИГРЫ!!!\nУДАЧИ!");
 			if (Game.WhoIsFirst(ref II, ref User))
 			{
@@ -95,13 +94,11 @@ namespace Task2.ConsoleGameXO
 				Console.WriteLine("Выключение...");
 			}
 		}
-		
 		/// <summary>
 		/// Вывод в консоль поля для игры.
 		/// </summary>
 		/// <param name="field">массив, хранящий поле для игры.</param>
 		/// <param name="WhatMove">Какой ход по счету идет.</param>
-		
 		public void PrintField(char[] field, int WhatMove) // Вывод игрового поля 
 		{
 			if (WhatMove == 0)
@@ -135,23 +132,14 @@ namespace Task2.ConsoleGameXO
 						CellRow = 0;
 					}
 				}
-
-				//if (field[0] == 'X') Console.ForegroundColor = ConsoleColor.Green; else if (field[0] == 'O') Console.ForegroundColor = ConsoleColor.Red; Console.ForegroundColor = ConsoleColor.Gray; Console.Write(" | ");
-				//Console.WriteLine(" -----------");
-				//Console.WriteLine($"| {field[3]} | {field[4]} | {field[5]} |");
-				//Console.WriteLine(" -----------");
-				//Console.WriteLine($"| {field[6]} | {field[7]} | {field[8]} |");
 				Console.WriteLine(" -----------");
-
 			}
 		}				
-		
 		/// <summary>
 		/// Изменения цвета консоли для окраски крестиков и ноликов.
 		/// </summary>
 		/// <param name="Cell">Ячейка игравого поля.</param>
 		/// <returns>Возвращает используемый символ для вывода в строку.</returns>
-		
 		char ChangeConsole(char Cell)
 		{
 			if (Cell == 'X')
@@ -160,15 +148,12 @@ namespace Task2.ConsoleGameXO
 				Console.ForegroundColor = ConsoleColor.Green;
 			return Cell;
 		}
-		
 		/// <summary>
 		/// Осуществляет запрос на ход у переданного экземпляра.
 		/// </summary>
 		/// <param name="Player"> Переданный экземпляр класса User, игрок который совершает ход при вызове.</param>
 		/// <param name="field">Ссылка на поле для игры.</param>
 		/// <returns>True, если ход завершен успешно, иначе - false.</returns>
-		
-	
 		private bool Move(User Player, ref char[] field) //Функция хода
 		{
 			bool MoveFlag = false;
@@ -218,9 +203,7 @@ namespace Task2.ConsoleGameXO
 				}
 			}
 			return MoveFlag;
-
 		}
-		
 		/// <summary>
 		/// Получение свободных клеток для хода.
 		/// </summary>
@@ -228,7 +211,6 @@ namespace Task2.ConsoleGameXO
 		/// <returns>
 		/// Номера свободных клеток.
 		/// </returns>
-		
 		List<int> WhichFreeCells(char[] Field)
 		{
 			List<int> FreeCellsArray = new List<int>();
@@ -241,25 +223,21 @@ namespace Task2.ConsoleGameXO
 			}
 			return FreeCellsArray;
 		}
-		
 		/// <summary>
 		/// Выводит стартовую заставку.
 		/// </summary>
-		
 		private void PrintStartGame()//Начальная заставка
 		{
 			Console.WriteLine("__________________________________________________________________________________");
 			Console.WriteLine("         WEEEEEEEELCOME! В ИГРУ КРЕСТИКИ И НОЛИКИ ИЛИ АНАБОЛИКИ, не важно");
 			Console.WriteLine("----------------------------------------------------------------------------------");
 		}
-		
 		/// <summary>
 		/// Алгоритм хода Бота.
 		/// </summary>
 		/// <param name="II">Переданный экземпляр класса User, игрок который совершает ход при вызове.В данном случае Бот.</param>
 		/// <param name="field">Ссылка на поле для игры.</param>
 		/// <returns>Найденный свободный индекс в поле, для хода Бота.</returns>
-		
 		private int BotMove(User II, ref char[] field)//Алгоритм хода у Бота
 		{			
 			int NextMove = 0;
@@ -297,14 +275,12 @@ namespace Task2.ConsoleGameXO
 			Console.WriteLine($"Бот выбрал - {IndexBoteMove + 1}");
 			return IndexBoteMove;
 		}
-		
 		/// <summary>
 		/// Мини игра в Орла и Решку для определения кто первый будет ходить.
 		/// </summary>
 		/// <param name="II">Бот.</param>
 		/// <param name="User">Пользователь.</param>
 		/// <returns>True, если мини игра завершена успешно, иначе - false.</returns>
-		
 		private bool WhoIsFirst(ref User II, ref User User)// Функция для определения кто ходит первый (Игра Орел и Решка)
 		{
 			bool StartGameFlag = false;
@@ -334,7 +310,6 @@ namespace Task2.ConsoleGameXO
 								II.Chars = 'X';
 								II.HeWalksFirst = true;
 							}
-
 						}							
 						else
 						{
@@ -375,8 +350,6 @@ namespace Task2.ConsoleGameXO
 			} while (!StartGameFlag);
 			return StartGameFlag;
 		}
-
-
     /// <summary>
     /// Проверка ситуации на возможную победу.
     /// </summary>
@@ -424,14 +397,12 @@ namespace Task2.ConsoleGameXO
 			}
 			return WinFlag;
 		}
-		
 		/// <summary>
 		/// Проверить кто-то победил или ничья.
 		/// </summary>
 		/// <param name="Player">Пользователь.</param>
 		/// <param name="II">Бот.</param>
 		/// <param name="DrawFlag">Флаг о ничьей. Если он True, то случилась ничья, иначе - false и есть победитель</param>
-		
 		private void LetsCelebrate(User Player,User II, bool DrawFlag)// Поздравительное сообщение
 		{
 			if (!DrawFlag)
@@ -454,7 +425,6 @@ namespace Task2.ConsoleGameXO
 				PrintMessege();
 			}
 		}
-		
 		/// <summary>
 		/// Поздравительное сообщение о конце игры. Выводит в консоль сообщенмие.
 		/// </summary>
@@ -471,7 +441,6 @@ namespace Task2.ConsoleGameXO
 			Console.WriteLine("|                  \\/   \\/   ||    || \\||                             |");
 			Console.WriteLine(" --------------------------------------------------------------------- ");
 		}
-
 		/// <summary>
 		/// Cообщение о ничьей. Выводит в консоль сообщенмие.
 		/// </summary>
@@ -487,11 +456,9 @@ namespace Task2.ConsoleGameXO
 			Console.WriteLine("|                                                                     |");
 			Console.WriteLine(" --------------------------------------------------------------------- ");
 		}
-
 		/// <summary>
 		/// Выигрышные комбинации в крестиках ноликах
 		/// </summary>
-
 		readonly int[,] winCombo = new int[,] // Набор выиграшных комбинаций
 		{				
 			{0,1,2},				
@@ -503,8 +470,6 @@ namespace Task2.ConsoleGameXO
 			{0,4,8},
 			{6,4,2},
 		};
-
-
 	}
   /// <summary>
   /// Список возможных символов для игры.
