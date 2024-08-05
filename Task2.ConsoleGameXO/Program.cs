@@ -168,6 +168,7 @@ namespace Task2.ConsoleGameXO
 		/// <param name="field">Ссылка на поле для игры.</param>
 		/// <returns>True, если ход завершен успешно, иначе - false.</returns>
 		
+	
 		private bool Move(User Player, ref char[] field) //Функция хода
 		{
 			bool MoveFlag = false;
@@ -374,16 +375,16 @@ namespace Task2.ConsoleGameXO
 			} while (!StartGameFlag);
 			return StartGameFlag;
 		}
-		
-		/// <summary>
-		/// Проверка ситуации на возможную победу.
-		/// </summary>
-		/// <param name="field">Игравое поле.</param>
-		/// <param name="II">Бот.</param>
-		/// <param name="User">Пользователь.</param>
-		/// <returns>True, если найден победитель, иначе - false.</returns>
-		
-		private bool WinCheck(char[] field, ref User II, ref User User)//Проверка на победу
+
+
+    /// <summary>
+    /// Проверка ситуации на возможную победу.
+    /// </summary>
+    /// <param name="field">Игравое поле.</param>
+    /// <param name="II">Бот.</param>
+    /// <param name="User">Пользователь.</param>
+    /// <returns>True, если найден победитель, иначе - false.</returns>
+    private bool WinCheck(char[] field, ref User II, ref User User)//Проверка на победу
 		{
 			bool WinFlag = false;
 
@@ -458,7 +459,6 @@ namespace Task2.ConsoleGameXO
 		/// Поздравительное сообщение о конце игры. Выводит в консоль сообщенмие.
 		/// </summary>
 		/// <param name="Winner">Победитель.</param>
-		
 		private void PrintMessege(User Winner)
 		{
 			Console.WriteLine(" --------------------------------------------------------------------- ");
@@ -475,7 +475,6 @@ namespace Task2.ConsoleGameXO
 		/// <summary>
 		/// Cообщение о ничьей. Выводит в консоль сообщенмие.
 		/// </summary>
-		
 		private void PrintMessege()
 		{
 			Console.WriteLine(" --------------------------------------------------------------------- ");
@@ -505,78 +504,16 @@ namespace Task2.ConsoleGameXO
 			{6,4,2},
 		};
 
-		/// <summary>
-		/// Класс участника игры.
-		/// </summary>
-		/// <param name = "thisIsAMan"> True, если экземпляр человек, иначе Бот. </param>
-		/// <param name = "Chars"> Записывается символ каким играет экземпляр. </param>
-		/// <param name = "heWalksFirst"> True, если экземпляр ходит пер, иначе нулики.</param>
-		/// <param name= "Wining">True, если экземпляр стал победителям, иначе false.</param>
-		/// <param name ="Name" > Поле с ником для экземпляра класса.</param>
-		private class User
-		{
-			public bool ThisIsAMan { get; set; }
-			private Symbols howChars;
-			public char Chars
-			{
-				get
-				{
-					return (char)this.howChars;
-				}
-				set
-				{
-					if (value == 'X')
-					{
-						this.howChars = Symbols.X;
-					}
-					else if (value == 'O')
-					{
-						this.howChars = Symbols.O;
-					}
-				}
-			}
-			public bool HeWalksFirst { get; set; }
-			public bool Wining { get; set; }
-			private string name;
-			public string Name
-			{
-				get
-				{
-					return this.name;
-				}
-				set
-				{
-					if (value != null)
-					{
-						this.name = value;
-					}
-					else
-					{
-						this.name = "Аноним";
-					}
-				}
-			}
-			public User()
-			{
-				Name = "Аноним";
-			}
-			public User(string name)
-			{
-				Name = name;
-			}
-		}
 
-
-
-		/// <summary>
-		/// Список возможных символов для игры.
-		/// </summary>		
-		///  <param name = "X"> Крестик </param>
-		///  <param name = "O"> Нолик </param>
-		private enum Symbols 
-		{
-			X = 'X',
-			O = 'O'
-		}
 	}
+  /// <summary>
+  /// Список возможных символов для игры.
+  /// </summary>		
+  ///  <param name = "X"> Крестик </param>
+  ///  <param name = "O"> Нолик </param>
+  internal enum Symbols
+  {
+    X = 'X',
+    O = 'O'
+  }
 }
