@@ -8,63 +8,38 @@ namespace Task2.ConsoleGameXO
 {
 	internal class Program
 	{
-		public class User
-		{
-			public int Who { get; set; }// 1 - Человек, а 2 - Компьютер
-			public Char Char { get; set; }// 1 - X (Крестик), 2 - O (Нулик)
-			public int HowHeWalks { get; set; } // Каким ходит экземпляр 1 или 2
-
-			public bool Wining { get; set; } // Статус победителя 
-			public string Name; // Имя игрока 
-			public User(string name)
-			{
-				Name = name;
-			}
-		}
 		static void Main(string[] args)
 		{
 			Console.OutputEncoding = Encoding.GetEncoding(1251);
 			Program Game = new Program();
-			bool NameSelected = false;
-			User User = new User("");
-			do
-			{
-				Console.WriteLine("Кто ты воин?\nКак тебя зовут?\n");
-				string name = Console.ReadLine();
-				if (string.Empty != name)
-				{
-					User = new User(name);
-					User.Who = 1;
-					NameSelected = true;
-				}
-				else
-				{
-					Console.WriteLine("Не знаю таких войнов! АТАКУЮ!!!\nЕще раз...");
-					continue;
-				}
-			} while (!NameSelected);
-			User II = new User("BILLY");
-			II.Who = 2;
+			Console.WriteLine("Кто ты воин?\nКак тебя зовут?\n");
+			User User = new User(Console.ReadLine()) 
+			{ 
+				ThisIsAMan = true 
+			};
+			User II = new User("BILLY") 
+			{ 
+				ThisIsAMan=false 
+			};
 			char[] field = new char[9] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
-			int[] MoveOrder = new int[1];
 			Game.PrintStartGame();
 			Game.PrintField(field, 0);
-			//MoveOrder = Game.WhoIsFirst(II,user);
+
 			Console.WriteLine("СТАРТ ИГРЫ!!!\nУДАЧИ!");
 			if (Game.WhoIsFirst(ref II, ref User))
 			{
 				int MoveCounter = 1;
 				bool DrowFlag = false;
 				do
-				{
-					if (MoveCounter > 4)
+				{					
+					if (MoveCounter > 4 && !Game.WinCheck(field, ref II, ref User))
 					{
 						DrowFlag = true;
 						User.Wining = false;
 						II.Wining = false;
 						break;
 					}
-					if (User.HowHeWalks == 1 && II.HowHeWalks == 2)
+					if (User.HeWalksFirst)
 					{
 						if (Game.Move(User, ref field))
 						{
@@ -87,7 +62,7 @@ namespace Task2.ConsoleGameXO
 							break;
 						}
 					}
-					else if (User.HowHeWalks == 2 && II.HowHeWalks == 1)
+					else if (II.HeWalksFirst)
 					{
 						if (Game.Move(II, ref field))
 						{
@@ -109,12 +84,10 @@ namespace Task2.ConsoleGameXO
 							Console.WriteLine("Выключение...");
 							break;
 						}
-					}
+					}					
+
 				} while (!Game.WinCheck(field, ref II, ref User));
-				if (DrowFlag == false && Game.WinCheck(field, ref II, ref User))
-					Game.LetsCelebrate(User, II);
-				else
-					Game.LetsCelebrate();
+				Game.LetsCelebrate(User, II, DrowFlag);
 			}
 			else
 			{
@@ -122,6 +95,13 @@ namespace Task2.ConsoleGameXO
 				Console.WriteLine("Выключение...");
 			}
 		}
+		
+		/// <summary>
+		/// Вывод в консоль поля для игры.
+		/// </summary>
+		/// <param name="field">массив, хранящий поле для игры.</param>
+		/// <param name="WhatMove">Какой ход по счету идет.</param>
+		
 		public void PrintField(char[] field, int WhatMove) // Вывод игрового поля 
 		{
 			if (WhatMove == 0)
@@ -162,22 +142,38 @@ namespace Task2.ConsoleGameXO
 				//Console.WriteLine(" -----------");
 				//Console.WriteLine($"| {field[6]} | {field[7]} | {field[8]} |");
 				Console.WriteLine(" -----------");
-				char ChangeConsole(char Cell)
-				{
-					if (Cell == 'X')
-						Console.ForegroundColor = ConsoleColor.Red;
-					else if (Cell == 'O')
-						Console.ForegroundColor = ConsoleColor.Green;
-					return Cell;
-				}
+
 			}
+		}				
+		
+		/// <summary>
+		/// Изменения цвета консоли для окраски крестиков и ноликов.
+		/// </summary>
+		/// <param name="Cell">Ячейка игравого поля.</param>
+		/// <returns>Возвращает используемый символ для вывода в строку.</returns>
+		
+		char ChangeConsole(char Cell)
+		{
+			if (Cell == 'X')
+				Console.ForegroundColor = ConsoleColor.Red;
+			else if (Cell == 'O')
+				Console.ForegroundColor = ConsoleColor.Green;
+			return Cell;
 		}
-		public bool Move(User Player, ref char[] field) //Функция хода
+		
+		/// <summary>
+		/// Осуществляет запрос на ход у переданного экземпляра.
+		/// </summary>
+		/// <param name="Player"> Переданный экземпляр класса User, игрок который совершает ход при вызове.</param>
+		/// <param name="field">Ссылка на поле для игры.</param>
+		/// <returns>True, если ход завершен успешно, иначе - false.</returns>
+		
+		private bool Move(User Player, ref char[] field) //Функция хода
 		{
 			bool MoveFlag = false;
 			while (!MoveFlag)
 			{
-				if (Player.Who == 1)
+				if (Player.ThisIsAMan)
 				{
 					Console.WriteLine("ТВОЙ ХОД!!! ВЫБЕРИ ИЗ \n");
 					List<int> FreeCells = WhichFreeCells(field);
@@ -189,7 +185,7 @@ namespace Task2.ConsoleGameXO
 					{
 						if (field[UserMove - 1] == ' ')
 						{
-							field[UserMove - 1] = Player.Char;
+							field[UserMove - 1] = Player.Chars;
 							MoveFlag = true;
 							return MoveFlag;
 						}
@@ -207,9 +203,9 @@ namespace Task2.ConsoleGameXO
 						continue;
 					}
 				}
-				else if (Player.Who == 2)
+				else if (!Player.ThisIsAMan)
 				{
-					field[BotMove(Player, field)] = Player.Char;
+					field[BotMove(Player, ref field)] = Player.Chars;
 					MoveFlag = true;
 					return MoveFlag;
 				}
@@ -221,67 +217,94 @@ namespace Task2.ConsoleGameXO
 				}
 			}
 			return MoveFlag;
-			List<int> WhichFreeCells(char[] Field)
-			{
-				List<int> FreeCellsArray = new List<int>();
-				for (int i = 0; i < Field.Length; i++)
-				{
-					if (Field[i] == ' ')
-					{
-						FreeCellsArray.Add(i + 1);
-					}
-				}
-				return FreeCellsArray;
-			}
+
 		}
-		public void PrintStartGame()//Начальная заставка
+		
+		/// <summary>
+		/// Получение свободных клеток для хода.
+		/// </summary>
+		/// <param name="Field">Поле для игрыю.</param>
+		/// <returns>
+		/// Номера свободных клеток.
+		/// </returns>
+		
+		List<int> WhichFreeCells(char[] Field)
+		{
+			List<int> FreeCellsArray = new List<int>();
+			for (int i = 0; i < Field.Length; i++)
+			{
+				if (Field[i] == ' ')
+				{
+					FreeCellsArray.Add(i + 1);
+				}
+			}
+			return FreeCellsArray;
+		}
+		
+		/// <summary>
+		/// Выводит стартовую заставку.
+		/// </summary>
+		
+		private void PrintStartGame()//Начальная заставка
 		{
 			Console.WriteLine("__________________________________________________________________________________");
 			Console.WriteLine("         WEEEEEEEELCOME! В ИГРУ КРЕСТИКИ И НОЛИКИ ИЛИ АНАБОЛИКИ, не важно");
 			Console.WriteLine("----------------------------------------------------------------------------------");
 		}
-		public int BotMove(User II, char[] field)//Алгоритм хода у Бота
-		{
-			int IndexBoteMove = ScrollField(II);
-			Console.WriteLine($"Бот выбрал - {IndexBoteMove + 1}");
-			return IndexBoteMove;
-			int ScrollField(User player)
+		
+		/// <summary>
+		/// Алгоритм хода Бота.
+		/// </summary>
+		/// <param name="II">Переданный экземпляр класса User, игрок который совершает ход при вызове.В данном случае Бот.</param>
+		/// <param name="field">Ссылка на поле для игры.</param>
+		/// <returns>Найденный свободный индекс в поле, для хода Бота.</returns>
+		
+		private int BotMove(User II, ref char[] field)//Алгоритм хода у Бота
+		{			
+			int NextMove = 0;
+			int BestMove = 0;
+			bool ChangeFlag = false;
+			for (int i = 0; i < 8; i++)
 			{
-				int NextMove = 0;
-				int BestMove = 0;
-				bool ChangeFlag = false;
-				for (int i = 0; i < 8; i++)
-				{
-					int GatchaWin = 0;
-					for (int j = 0; j < 3; j++)
-					{
-						if (field[winCombo[i, j]] == player.Char)
-						{
-							GatchaWin++;
-						}
-					}
-					if (GatchaWin > BestMove)
-					{
-						BestMove = GatchaWin;
-						ChangeFlag = true;
-					}
-				}
-				if (!ChangeFlag)
-				{
-					Random rnd = new Random();
-					BestMove = rnd.Next(0, 8);
-				}
+				int GatchaWin = 0;
 				for (int j = 0; j < 3; j++)
 				{
-					if (field[winCombo[BestMove, j]] == ' ')
+					if (field[winCombo[i, j]] == II.Chars)
 					{
-						NextMove = winCombo[BestMove, j];
+						GatchaWin++;
 					}
 				}
-				return NextMove;
+				if (GatchaWin > BestMove)
+				{
+					BestMove = GatchaWin;
+					ChangeFlag = true;
+				}
 			}
+			if (!ChangeFlag)
+			{
+				Random rnd = new Random();
+				BestMove = rnd.Next(0, 8);
+			}
+			for (int j = 0; j < 3; j++)
+			{
+				if (field[winCombo[BestMove, j]] == ' ')
+				{
+					NextMove = winCombo[BestMove, j];
+				}
+			}
+			int IndexBoteMove = NextMove;
+			Console.WriteLine($"Бот выбрал - {IndexBoteMove + 1}");
+			return IndexBoteMove;
 		}
-		public bool WhoIsFirst(ref User II, ref User User)// Функция для определения кто ходит первый (Игра Орел и Решка)
+		
+		/// <summary>
+		/// Мини игра в Орла и Решку для определения кто первый будет ходить.
+		/// </summary>
+		/// <param name="II">Бот.</param>
+		/// <param name="User">Пользователь.</param>
+		/// <returns>True, если мини игра завершена успешно, иначе - false.</returns>
+		
+		private bool WhoIsFirst(ref User II, ref User User)// Функция для определения кто ходит первый (Игра Орел и Решка)
 		{
 			bool StartGameFlag = false;
 			Random rnd = new Random();
@@ -298,17 +321,17 @@ namespace Task2.ConsoleGameXO
 						{
 							if (UserChar == 1)
 							{
-								User.Char = 'X';
-								User.HowHeWalks = 1;
-								II.Char = 'O';
-								II.HowHeWalks = 2;
+								User.Chars = 'X';
+								User.HeWalksFirst = true;
+								II.Chars = 'O';
+								II.HeWalksFirst = false;
 							}
 							else if (UserChar == 2)
 							{
-								User.Char = 'O';
-								User.HowHeWalks = 2;
-								II.Char = 'X';
-								II.HowHeWalks = 1;
+								User.Chars = 'O';
+								User.HeWalksFirst = false;
+								II.Chars = 'X';
+								II.HeWalksFirst = true;
 							}
 
 						}							
@@ -325,17 +348,17 @@ namespace Task2.ConsoleGameXO
 						{
 							if (BotDrop == 1)
 							{
-								II.Char = 'X';
-								II.HowHeWalks = 1;
-								User.Char = 'O';
-								User.HowHeWalks = 2;
+								II.Chars = 'X';
+								II.HeWalksFirst = true;
+								User.Chars = 'O';
+								User.HeWalksFirst = false;
 							}
 							else if (BotDrop == 2)
 							{
-								II.Char = 'O';
-								II.HowHeWalks = 2;
-								User.Char = 'X';
-								User.HowHeWalks = 1;
+								II.Chars = 'O';
+								II.HeWalksFirst = false;
+								User.Chars = 'X';
+								User.HeWalksFirst = true;
 							}
 						}
 						Console.WriteLine($"ТЫ НЕ УГАДАЛ!!!!\nБОТ Выбрал сторону Х/O(1/2) - {BotDrop}");
@@ -351,7 +374,16 @@ namespace Task2.ConsoleGameXO
 			} while (!StartGameFlag);
 			return StartGameFlag;
 		}
-		public bool WinCheck(char[] field, ref User II, ref User User)//Проверка на победу
+		
+		/// <summary>
+		/// Проверка ситуации на возможную победу.
+		/// </summary>
+		/// <param name="field">Игравое поле.</param>
+		/// <param name="II">Бот.</param>
+		/// <param name="User">Пользователь.</param>
+		/// <returns>True, если найден победитель, иначе - false.</returns>
+		
+		private bool WinCheck(char[] field, ref User II, ref User User)//Проверка на победу
 		{
 			bool WinFlag = false;
 
@@ -376,7 +408,7 @@ namespace Task2.ConsoleGameXO
 					int GatchaWin = 0;
 					for (int j = 0; j < 3; j++)
 					{
-						if (field[winCombo[i, j]] == player.Char)
+						if (field[winCombo[i, j]] == player.Chars)
 						{
 							GatchaWin++;
 						}
@@ -391,60 +423,160 @@ namespace Task2.ConsoleGameXO
 			}
 			return WinFlag;
 		}
-		public void LetsCelebrate(User Player, User II)// Поздравительное сообщение
+		
+		/// <summary>
+		/// Проверить кто-то победил или ничья.
+		/// </summary>
+		/// <param name="Player">Пользователь.</param>
+		/// <param name="II">Бот.</param>
+		/// <param name="DrawFlag">Флаг о ничьей. Если он True, то случилась ничья, иначе - false и есть победитель</param>
+		
+		private void LetsCelebrate(User Player,User II, bool DrawFlag)// Поздравительное сообщение
 		{
-			if (Player.Wining)
+			if (!DrawFlag)
 			{
-				PrintMessege(Player);
-			}
-			else if (II.Wining)
-			{
-				PrintMessege(II);
+				if (Player.Wining)
+				{
+					PrintMessege(Player);
+				}
+				else if (II.Wining)
+				{
+					PrintMessege(II);
+				}
+				else
+				{
+					Console.WriteLine("Ошибка победы");
+				}
 			}
 			else
 			{
-				Console.WriteLine("Ошибка победы");
-			}
-			void PrintMessege(User Winner)
-			{
-				Console.WriteLine(" --------------------------------------------------------------------- ");
-				Console.WriteLine("|                  \\  /    /\\    || ||                                |");
-				Console.WriteLine("|                   ||     \\/    \\\\//                                 |");
-				Console.WriteLine(" --------------------------------------------------------------------- ");
-				Console.WriteLine($"                    YOU  WIN MY BOY - {Winner.Name}                   ");
-				Console.WriteLine(" --------------------------------------------------------------------- ");
-				Console.WriteLine("|                 \\   /\\   / ||    ||\\ ||                             |");
-				Console.WriteLine("|                  \\/   \\/   ||    || \\||                             |");
-				Console.WriteLine(" --------------------------------------------------------------------- ");
+				PrintMessege();
 			}
 		}
-		public void LetsCelebrate()// Сообщение о ничьей 
+		
+		/// <summary>
+		/// Поздравительное сообщение о конце игры. Выводит в консоль сообщенмие.
+		/// </summary>
+		/// <param name="Winner">Победитель.</param>
+		
+		private void PrintMessege(User Winner)
 		{
-			PrintMessege();
+			Console.WriteLine(" --------------------------------------------------------------------- ");
+			Console.WriteLine("|                  \\  /    /\\    || ||                                |");	
+			Console.WriteLine("|                   ||     \\/    \\\\//                                 |");	
+			Console.WriteLine(" --------------------------------------------------------------------- ");	
+			Console.WriteLine($"                    YOU  WIN MY BOY - {Winner.Name}                   ");	
+			Console.WriteLine(" --------------------------------------------------------------------- ");			
+			Console.WriteLine("|                 \\   /\\   / ||    ||\\ ||                             |");		
+			Console.WriteLine("|                  \\/   \\/   ||    || \\||                             |");
+			Console.WriteLine(" --------------------------------------------------------------------- ");
+		}
 
-			void PrintMessege()
+		/// <summary>
+		/// Cообщение о ничьей. Выводит в консоль сообщенмие.
+		/// </summary>
+		
+		private void PrintMessege()
+		{
+			Console.WriteLine(" --------------------------------------------------------------------- ");
+			Console.WriteLine("|                                                                     |");
+			Console.WriteLine("|                                                                     |");
+			Console.WriteLine(" --------------------------------------------------------------------- ");
+			Console.WriteLine($"                            - НИЧЬЯ -                                 ");
+			Console.WriteLine(" --------------------------------------------------------------------- ");
+			Console.WriteLine("|                                                                     |");
+			Console.WriteLine("|                                                                     |");
+			Console.WriteLine(" --------------------------------------------------------------------- ");
+		}
+
+		/// <summary>
+		/// Выигрышные комбинации в крестиках ноликах
+		/// </summary>
+
+		readonly int[,] winCombo = new int[,] // Набор выиграшных комбинаций
+		{				
+			{0,1,2},				
+			{3,4,5},				
+			{6,7,8},			
+			{0,3,6},				
+			{1,4,7},		
+			{2,5,8},		
+			{0,4,8},
+			{6,4,2},
+		};
+
+		/// <summary>
+		/// Класс участника игры.
+		/// </summary>
+		/// <param name = "thisIsAMan"> True, если экземпляр человек, иначе Бот. </param>
+		/// <param name = "Chars"> Записывается символ каким играет экземпляр. </param>
+		/// <param name = "heWalksFirst"> True, если экземпляр ходит пер, иначе нулики.</param>
+		/// <param name= "Wining">True, если экземпляр стал победителям, иначе false.</param>
+		/// <param name ="Name" > Поле с ником для экземпляра класса.</param>
+		private class User
+		{
+			public bool ThisIsAMan { get; set; }
+			private Symbols howChars;
+			public char Chars
 			{
-				Console.WriteLine(" --------------------------------------------------------------------- ");
-				Console.WriteLine("|                                                                     |");
-				Console.WriteLine("|                                                                     |");
-				Console.WriteLine(" --------------------------------------------------------------------- ");
-				Console.WriteLine($"                            - НИЧЬЯ -                                 ");
-				Console.WriteLine(" --------------------------------------------------------------------- ");
-				Console.WriteLine("|                                                                     |");
-				Console.WriteLine("|                                                                     |");
-				Console.WriteLine(" --------------------------------------------------------------------- ");
+				get
+				{
+					return (char)this.howChars;
+				}
+				set
+				{
+					if (value == 'X')
+					{
+						this.howChars = Symbols.X;
+					}
+					else if (value == 'O')
+					{
+						this.howChars = Symbols.O;
+					}
+				}
+			}
+			public bool HeWalksFirst { get; set; }
+			public bool Wining { get; set; }
+			private string name;
+			public string Name
+			{
+				get
+				{
+					return this.name;
+				}
+				set
+				{
+					if (value != null)
+					{
+						this.name = value;
+					}
+					else
+					{
+						this.name = "Аноним";
+					}
+				}
+			}
+			public User()
+			{
+				Name = "Аноним";
+			}
+			public User(string name)
+			{
+				Name = name;
 			}
 		}
-		int[,] winCombo = new int[,] // Набор выиграшных комбинаций
-				{
-								{0,1,2},
-								{3,4,5},
-								{6,7,8},
-								{0,3,6},
-								{1,4,7},
-								{2,5,8},
-								{0,4,8},
-								{6,4,2},
-				};
+
+
+
+		/// <summary>
+		/// Список возможных символов для игры.
+		/// </summary>		
+		///  <param name = "X"> Крестик </param>
+		///  <param name = "O"> Нолик </param>
+		private enum Symbols 
+		{
+			X = 'X',
+			O = 'O'
+		}
 	}
 }
