@@ -12,12 +12,12 @@ namespace Task2.ConsoleGameXO
 		{
 			Console.OutputEncoding = Encoding.GetEncoding(1251);
 			Program Game = new Program();
-			Console.WriteLine("Кто ты воин?\nКак тебя зовут?\n");
+			Console.Write("Кто ты воин?\nВведите имя: ");
 			User User = new User(Console.ReadLine()) 
 			{ 
 				ThisIsAMan = true 
 			};
-			User II = new User("BILLY") 
+			User II = new User() 
 			{ 
 				ThisIsAMan=false 
 			};

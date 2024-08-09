@@ -47,21 +47,13 @@ namespace Task2.ConsoleGameXO
       }
       set
       {
-        if (value != null)
+        if (string.IsNullOrWhiteSpace(value))
         {
           this.name = value;
         }
-        else
-        {
-          this.name = "Аноним";
-        }
       }
     }
-    public User()
-    {
-      Name = "Аноним";
-    }
-    public User(string name)
+    public User(string name = "Аноним")
     {
       Name = name;
     }
