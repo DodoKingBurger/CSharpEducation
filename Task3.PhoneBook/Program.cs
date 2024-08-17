@@ -10,6 +10,9 @@ namespace Task3.PhoneBook
   {
     static void Main(string[] args)
     {
+      Console.OutputEncoding = Encoding.GetEncoding(1251);
+      Phonebook phoneBook = new Phonebook();
+      Console.WriteLine(phoneBook.Contact);
     }
   }
 }

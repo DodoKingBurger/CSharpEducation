@@ -1,0 +1,8 @@
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\bin\Debug\Task3.PhoneBook.exe.config
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\bin\Debug\Task3.PhoneBook.exe
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\bin\Debug\Task3.PhoneBook.pdb
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\obj\Debug\Task3.PhoneBook.csproj.AssemblyReference.cache
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\obj\Debug\Task3.PhoneBook.csproj.SuggestedBindingRedirects.cache
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\obj\Debug\Task3.PhoneBook.csproj.CoreCompileInputs.cache
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\obj\Debug\Task3.PhoneBook.exe
+C:\Users\sarki\source\repos\CSharpEducation\Task3.PhoneBook\obj\Debug\Task3.PhoneBook.pdb
