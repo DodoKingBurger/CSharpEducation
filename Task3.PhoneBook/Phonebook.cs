@@ -13,26 +13,31 @@ namespace Task3.PhoneBook
   internal class Phonebook
   {
     private static Phonebook instance;
-    private List<Abonent> contact;
-    public List<Abonent> Contact
+    private List<Abonent> Contact;
+    public bool Add(Abonent abonent)
     {
-      get { return this.contact; }
-
-      set
+      for(int i = 0; i < this.Contact.Count; i++)
       {
-        if (value.Any())
-          throw new ArgumentException("Спискок контактов пуст");
+        if (this.Contact[i].Name == abonent.Name || this.Contact[i].Number == abonent.Number)
+        {
+          return false;
+        }
         else
-          this.contact = value;
+        {
+          Contact.Add(abonent);
+          return true;
+        }
       }
+      return false;
     }
-    public void ReadPhoneBook()
+    private void ReadPhoneBook()
     {
       string line;
       try
       {
         var exePath = AppDomain.CurrentDomain.BaseDirectory;//path to exe file
-        var path = Path.Combine(exePath, "..\\..\\phonebook.txt");
+        var path = Path.Combine(exePath, "\\phonebook.txt");
+        //Проверка на наличие файла добавить
         StreamReader srt = new StreamReader($"{path}");
         List<Abonent> contact = new List<Abonent>();
         line = srt.ReadLine();
@@ -54,9 +59,12 @@ namespace Task3.PhoneBook
         Console.WriteLine("Exception: " + e.Message);
       } 
     }
+
     public Phonebook()
     {
+      Contact = new List<Abonent>();
       ReadPhoneBook();
     }
+
   }
 }
