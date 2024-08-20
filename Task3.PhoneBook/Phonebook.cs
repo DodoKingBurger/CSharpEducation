@@ -1,70 +1,71 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using System.Reflection;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics;
 
 namespace Task3.PhoneBook
 {
-  internal class Phonebook
+	/// <summary>
+	/// Abonent - Класс Абонент представляет собой будуйщий экземпляр контанкта в телефонной книге
+	/// </summary> 
+	internal struct Abonent
   {
-    private static Phonebook instance;
-    private List<Abonent> Contact;
-    public bool Add(Abonent abonent)
+    private long number;
+    private string name;
+    public long Number
     {
-      for(int i = 0; i < this.Contact.Count; i++)
+      get
       {
-        if (this.Contact[i].Name == abonent.Name || this.Contact[i].Number == abonent.Number)
+        return number;
+      }
+      set
+      {
+        if (value != null)
         {
-          return false;
+          //if(lengh(value) == 11 || lengh(value) == 6 || lengh(value) == 12)
+          //{
+            this.number = value;
+          //}
+          //else
+          //{
+          //  Console.WriteLine("Такого номер не существует");
+          //}
         }
         else
         {
-          Contact.Add(abonent);
-          return true;
-        }
+					this.number = -1;
+				}
       }
-      return false;
     }
-    private void ReadPhoneBook()
+    public string Name
     {
-      string line;
-      try
+      get
       {
-        var exePath = AppDomain.CurrentDomain.BaseDirectory;//path to exe file
-        var path = Path.Combine(exePath, "\\phonebook.txt");
-        //Проверка на наличие файла добавить
-        StreamReader srt = new StreamReader($"{path}");
-        List<Abonent> contact = new List<Abonent>();
-        line = srt.ReadLine();
-        while ( line != null )
+        return this.name;
+      }
+      set
+      {
+        if (string.IsNullOrEmpty(value))
         {
-          Console.WriteLine( line );
-          line = srt.ReadLine();
-          string[] Contactick = line.Split('\t');
-          long.TryParse(Contactick[1], out long Numbr);
-          Abonent Abonentick = new Abonent(Numbr, Contactick[0]);
-          contact.Add(Abonentick);
+          this.name = "Аноним";
         }
-        Contact = contact;
-        srt.Close();
-        Console.ReadLine();
+        else
+        {
+          this.name = value;
+        }
+
       }
-      catch(Exception e)
-      {
-        Console.WriteLine("Exception: " + e.Message);
-      } 
     }
-
-    public Phonebook()
-    {
-      Contact = new List<Abonent>();
-      ReadPhoneBook();
-    }
-
+    //private int lengh(long value)
+    //{
+    //  int i = 0;
+    //  do
+    //  {
+    //    value /= 10;
+    //    i++;
+    //  }while (value>0);
+    //  return i;
+    //}
   }
 }
