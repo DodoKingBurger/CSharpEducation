@@ -13,37 +13,66 @@ namespace Task3.PhoneBook
   {
     private long number;
     private string name;
+    private string numberStr;
+		/// <summary>
+		/// Проверка заполненности анкеты для пополнения списка контактов
+		/// </summary>
+		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+		public bool Any()
+    {
+      if((Number != 0 && Number != -1) || !string.IsNullOrEmpty(Name))
+      {
+        return true;
+      }
+      else { return false; }
+    }
+    /// <summary>
+    /// Номер телефна в числовом значении
+    /// </summary>
     public long Number
     {
       get
       {
-        return number;
+        if(this.number == 0)
+        {
+          throw new ArgumentException("Exception: Номер телефона не стандартный");
+				}
+        else
+        {
+          return this.number;
+        }
+
       }
       set
       {
         if (value != null)
         {
-          //if(lengh(value) == 11 || lengh(value) == 6 || lengh(value) == 12)
-          //{
-            this.number = value;
-          //}
-          //else
-          //{
-          //  Console.WriteLine("Такого номер не существует");
-          //}
-        }
+          this.number = value;
+					this.NumberStr = value.ToString();
+				}
         else
         {
 					this.number = -1;
+					this.NumberStr = "Номер телефона не найден";
 				}
       }
     }
+    /// <summary>
+    /// Имя абонента
+    /// </summary>
     public string Name
     {
       get
       {
-        return this.name;
-      }
+				if (this.name == null)
+				{
+					throw new ArgumentException("Exception: Номер телефона не стандартный");
+				}
+				else
+				{
+					return this.name;
+				}
+			}
       set
       {
         if (string.IsNullOrEmpty(value))
@@ -57,15 +86,79 @@ namespace Task3.PhoneBook
 
       }
     }
-    //private int lengh(long value)
-    //{
-    //  int i = 0;
-    //  do
-    //  {
-    //    value /= 10;
-    //    i++;
-    //  }while (value>0);
-    //  return i;
-    //}
+    /// <summary>
+    /// Номер абонента в строке
+    /// </summary>
+		public string NumberStr
+		{
+			get
+			{
+				return this.numberStr;
+			}
+			private set
+			{
+				if (value != null)
+				{
+          if (value.Length == 11 || value.Length == 6)
+          {
+            this.numberStr = PhoneType(this.number);
+          }
+          else
+          {
+            Console.WriteLine("Такого номер не существует");
+          }
+        }
+				else
+				{
+					this.number = -1;
+				}
+			}
+		}
+    /// <summary>
+    /// Метод для изменения номера телефона в вид как спраавочнике
+    /// </summary>
+    /// <param name="Number">Номер телефона в числовом занчении</param>
+    /// <returns></returns>
+    private string PhoneType(long Number)
+    {
+      string NumberStr;
+
+			if (Length(Number) == 11)
+      {
+        string s = Number.ToString();
+        if (int.Parse(s[0].ToString()) == 8)
+        {
+					NumberStr = Number.ToString("# (###) ###-##-##");
+				}
+				else
+				{
+					NumberStr = Number.ToString("+# (###) ###-##-##");
+				}
+			}
+      else if(Length(Number) == 6)
+      {
+				NumberStr = Number.ToString("##-##-##");
+			}
+      else
+      {
+        NumberStr = ($"Exception: Номер телефона не стандартный");
+      }
+      return NumberStr;
+    }
+		/// <summary>
+		/// Определение длины номера телефона
+		/// </summary>
+		/// <param name="Number">Номер телефона в числовом занчении</param>
+		/// <returns></returns>
+		private int Length(long Number)
+    {
+      int i = 0;
+      do
+      {
+				Number /= 10;
+        i++;
+      } while (Number > 0);
+      return i;
+    }
   }
 }
