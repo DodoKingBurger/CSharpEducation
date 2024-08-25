@@ -14,18 +14,7 @@ namespace Task3.PhoneBook
     private long number;
     private string name;
     private string numberStr;
-		/// <summary>
-		/// Проверка заполненности анкеты для пополнения списка контактов
-		/// </summary>
-		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
-		public bool Any()
-    {
-      if((Number != 0 && Number != -1) || !string.IsNullOrEmpty(Name))
-      {
-        return true;
-      }
-      else { return false; }
-    }
+
     /// <summary>
     /// Номер телефна в числовом значении
     /// </summary>
@@ -115,10 +104,22 @@ namespace Task3.PhoneBook
 			}
 		}
     /// <summary>
+    /// Проверка заполненности анкеты для пополнения списка контактов
+    /// </summary>
+    /// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+    public bool Any()
+    {
+      if ((Number != 0 && Number != -1) || !string.IsNullOrEmpty(Name))
+      {
+        return true;
+      }
+      else { return false; }
+    }
+    /// <summary>
     /// Метод для изменения номера телефона в вид как спраавочнике
     /// </summary>
     /// <param name="Number">Номер телефона в числовом занчении</param>
-    /// <returns></returns>
+    /// <returns>Возвращает номер телефона в строков ввиде, как в справочнике</returns>
     private string PhoneType(long Number)
     {
       string NumberStr;
@@ -149,7 +150,7 @@ namespace Task3.PhoneBook
 		/// Определение длины номера телефона
 		/// </summary>
 		/// <param name="Number">Номер телефона в числовом занчении</param>
-		/// <returns></returns>
+		/// <returns>Длиину номера телефоа</returns>
 		private int Length(long Number)
     {
       int i = 0;

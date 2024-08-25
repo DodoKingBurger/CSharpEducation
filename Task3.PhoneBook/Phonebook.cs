@@ -8,43 +8,42 @@ using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.Net.Cache;
 
 namespace Task3.PhoneBook
 {
   internal class Phonebook
   {
     private static Phonebook instance;
+    /// <summary>
+    /// Список Аббонетов.
+    /// </summary>
     private List<Abonent> Contact;
+    /// <summary>
+    /// Путь к файлу со списком аббонентов
+    /// </summary>
     private string path;
-		/// <summary>
-		/// Метод для добавления абонента в телефонный справочник
-		/// </summary>
-		/// <param name="abonent">Экземпляр структуры абонент</param>
-		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
-		public bool Add(Abonent abonent)
+
+
+    #region Открытый функционал
+    /// <summary>
+    /// Метод для добавления абонента в телефонный справочник
+    /// </summary>
+    /// <param name="abonent">Экземпляр структуры абонент</param>
+    /// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+    public bool Add(Abonent abonent)
     {
-      if (this.Contact.Any())
+      for (int i = 0; i < this.Contact.Count; i++)
       {
-        for(int i = 0; i < this.Contact.Count; i++)
+        if (this.Contact[i].Name == abonent.Name || this.Contact[i].Number == abonent.Number)
         {
-          if (this.Contact[i].Name == abonent.Name || this.Contact[i].Number == abonent.Number)
-          {
-						Console.WriteLine($"Контакт уже есть в записной книжке\nМожет вы ищете: {Contact[i].Name} c номером: {Contact[i].Number.ToString("+# (###) ###-##-##")}");
-						return false;
-          }
-          else
-          {
-						this.Contact.Add(abonent);
-            return true;
-          }
+          Console.WriteLine($"Контакт уже есть в записной книжке\nМожет вы ищете: {Contact[i].Name} c номером: {Contact[i].Number.ToString("+# (###) ###-##-##")}");
+          return false;
         }
       }
-      else
-      {
-        return false;
-      }
-			return false;
-		}
+      this.Contact.Add(abonent);
+      return true;
+    }
 		/// <summary>
 		/// Метод для удаления абонента из телефонного справочника
 		/// </summary>
@@ -61,19 +60,76 @@ namespace Task3.PhoneBook
 						this.Contact.RemoveAt(i);
 						return true;
 					}
-					else
-					{
-            Console.WriteLine("Контакт не был найден");
-						return false;
-					}
-				}
+				}            
+        Console.WriteLine("Контакт не был найден");
+			  return false;
 			}
 			else
 			{
-				return false;
+        Console.WriteLine("Списко контактов пуст");
+        return false;
 			}
-			return false;
-		}
+    }
+    /// <summary>
+    /// Метод для обновления данный найденного абонента
+    /// </summary>
+    /// <param name="abonent">Изменяймый абонент</param>
+    public void Uppdate(Abonent abonent)
+		{
+      Console.WriteLine("Изменить Имя - 1\nИзменить номер телефона - 2\n");
+      string request = Console.ReadLine();
+      if (int.TryParse(request, out int number) && (number == 1 || number == 2))
+      {
+        Console.Write("Введите новые данные - ");
+				string Data = Console.ReadLine();
+				if (!string.IsNullOrEmpty(Data))
+				{
+					if(number == 1)
+					{
+						for(int i = 0; i < this.Contact.Count; i++)
+						{
+							if (Contact[i].Name == abonent.Name)
+							{
+                abonent.Name = Data;
+								Contact[i] = abonent;
+                Console.WriteLine("Данные успешно изменены");
+              }
+						}
+					}
+					else
+					{
+            for (int i = 0; i < this.Contact.Count; i++)
+            {
+              if (Contact[i].Number == abonent.Number)
+              {
+								if(long.TryParse(Data,out long numberAbonent))
+								{
+									abonent.Number = numberAbonent;
+									Contact[i] = abonent;
+                  Console.WriteLine("Данные успешно изменены");
+                  
+                }
+								else
+								{
+									Console.WriteLine("Новые данные не являются номером");
+                  Uppdate(abonent);
+                }
+              }
+            }
+          }
+				}
+				else
+				{
+					Console.WriteLine("Запрос пуст");
+					Uppdate(abonent);
+        }
+      }
+      else
+      {
+        Console.WriteLine("Неизвестная операция! Возвращаемся в\n");
+        Uppdate(abonent);
+      }
+    }
 		/// <summary>
 		/// Метод для сохранения списка в фаил phonebook.txt
 		/// </summary>
@@ -91,87 +147,67 @@ namespace Task3.PhoneBook
 			}
     }
 		/// <summary>
-		/// Метод для записи в фаил коллекцию абонентов
-		/// </summary>
-		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
-		private bool SaveProcessing()
-    {
-			if (this.Contact.Any())
-			{
-				string[] line = new string[this.Contact.Count - 1];
-				for (int i = 0; i < this.Contact.Count; i++)
-				{
-					line[i + 1] = $"{this.Contact[i].Name}\t{this.Contact[i].Number}\n";
-				}
-				File.WriteAllLines(this.path, line);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}		
-		/// <summary>
 		/// Пойск абонента
 		/// </summary>
 		/// <param name="name">Имя искомого абонента</param>
 		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
-		public bool SearchAbonent(string name)
+		public bool SearchAbonent(string name, out Abonent abonent)
     {
-			if (this.Contact.Any())
+      abonent = new Abonent();
+      if (this.Contact.Any())
 			{
 				for (int i = 0; i < this.Contact.Count; i++)
 				{
 					if (this.Contact[i].Name == name)
 					{
-						Console.WriteLine($"Контакт уже есть в записной книжке\nМожет вы ищете: {Contact[i].Name} c номером: {Contact[i].Number.ToString("+# (###) ###-##-##")}");
-						return true;
+						Console.WriteLine($"Контакт уже есть в записной книжке\nМожет вы ищете: {Contact[i].Name} c номером: {Contact[i].NumberStr}");
+            abonent = this.Contact[i];
+            return true;
 					}
-					else
-					{
-						Console.WriteLine($"Абонент не найден");
-						return false;
-					}
-				}
+
+				}						
+        Console.WriteLine($"Абонент не найден");
+				return false;
 			}
 			else
 			{
+        Console.WriteLine("Список контактов пуст");
 				return false;
 			}
-			return false;
 		}
 		/// <summary>
 		/// Пойск абонента
 		/// </summary>
 		/// <param name="number">Номер искомого абонента</param>
 		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
-		public bool SearchAbonent(long number)
+		public bool SearchAbonent(long number, out Abonent abonent)
     {
-			if (this.Contact.Any())
+      abonent = new Abonent();
+      if (this.Contact.Any())
 			{
 				for (int i = 0; i < this.Contact.Count; i++)
 				{
 					if (this.Contact[i].Number == number)
 					{
-						Console.WriteLine($"Контакт уже есть в записной книжке\nМожет вы ищете: {Contact[i].Name} c номером: {Contact[i].Number.ToString("+# (###) ###-##-##")}");
-						return true;
-					}
-					else
-					{
-						Console.WriteLine($"Абонент не найден");
-						return false;
+						Console.WriteLine($"Контакт уже есть в записной книжке\nМожет вы ищете: {Contact[i].Name} c номером: {Contact[i].NumberStr}");
+            abonent = this.Contact[i];
+            return true;
 					}
 				}
-			}
+        Console.WriteLine($"Абонент не найден");
+        return false;
+      }
 			else
 			{
-				return false;
+        Console.WriteLine("Список контактов пуст");
+        return false;
 			}
-			return false;
 		}
-		/// <summary>
-		/// Открытие/создания телефонной книги
-		/// </summary>
+    #endregion
+    #region Внутренние методы
+    /// <summary>
+    /// Открытие/создания телефонной книги
+    /// </summary>
     private void OpenPhoneBook()
     {
       try
@@ -180,7 +216,7 @@ namespace Task3.PhoneBook
         //Проверка на наличие файла добавить
         if(File.Exists(this.path))
         {
-          ReadPhoneBook(ref contact);
+          ReadPhoneBook();
 				}
         else 
         {
@@ -201,31 +237,58 @@ namespace Task3.PhoneBook
 			StreamReader srt = new StreamReader($"{this.path}");
 			List<Abonent> contact = new List<Abonent>();
 			line = srt.ReadLine();
-			while (line != null)
+			while (line != null && line !="")
 			{
 				Console.WriteLine(line);
-				line = srt.ReadLine();
 				string[] Contactick = line.Split('\t');
 				long.TryParse(Contactick[1], out long Numbr);
 				Abonent Abonentick = new Abonent();
         Abonentick.Number = Numbr;
         Abonentick.Name = Contactick[0];
-				contact.Add(Abonentick);
+				contact.Add(Abonentick);				
+        line = srt.ReadLine();
 			}
 			Contact = contact;
 			srt.Close();
-			Console.ReadLine();
 		}
-		/// <summary>
-		/// Конструктор для создания телефонной книги и запрос пути к файлу .exe
-		/// </summary>
+    /// <summary>
+    /// Метод для записи в фаил коллекцию абонентов
+    /// </summary>
+    /// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+    private bool SaveProcessing()
+    {
+      if (this.Contact.Any())
+      {
+        string[] line = new string[this.Contact.Count];
+        for (int i = 0; i < this.Contact.Count; i++)
+        {
+          using (StreamWriter sw = File.AppendText("phonebook.txt"))
+          {
+            sw.WriteLine($"{this.Contact[i].Name}\t{this.Contact[i].Number}");
+            sw.Close();
+          }
+        }
+        return true;
+      }
+      else
+      {
+        Console.WriteLine("Ошибка в сохранении списка");
+        return false;
+      }
+    }
+    #endregion
+    #region Конструкторы
+    /// <summary>
+    /// Конструктор для создания телефонной книги и запрос пути к файлу .exe
+    /// </summary>
     public Phonebook()
     {        
-      var exePath = AppDomain.CurrentDomain.BaseDirectory;//path to exe file
-      this.path = Path.Combine(exePath, "\\phonebook.txt");
-			this.Contact = new List<Abonent>();
+      //var exePath = Environment.CurrentDirectory;
+      this.path = Path.Combine("phonebook.txt");
+      this.Contact = new List<Abonent>();
 			OpenPhoneBook();
     }
-    
+    #endregion
+
   }
 }
