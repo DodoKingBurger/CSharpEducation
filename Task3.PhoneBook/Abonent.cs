@@ -30,7 +30,6 @@ namespace Task3.PhoneBook
         {
           return this.number;
         }
-
       }
       set
       {
@@ -46,6 +45,7 @@ namespace Task3.PhoneBook
         }
       }
     }
+
     private string name;
 
     /// <summary>
@@ -77,6 +77,7 @@ namespace Task3.PhoneBook
 
       }
     }
+
     private string numberStr;
 
     /// <summary>
