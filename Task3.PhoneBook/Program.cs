@@ -132,6 +132,10 @@ namespace Task3.PhoneBook
 				SaveContact(ref phonebook);
       }
 		}
+		/// <summary>
+		/// Метод для удаление контакта из переданного списка.
+		/// </summary>
+		/// <param name="phonebook">Ссылка на телефонную книгу.</param>
 		public void DeleteContact(ref Phonebook phonebook)
 		{
 			SearchContact(ref phonebook, out Abonent abonent);
@@ -151,6 +155,11 @@ namespace Task3.PhoneBook
         Console.WriteLine("Данные об абонненте пусты");
       }
     }
+		/// <summary>
+		/// Метод для пойска абонента в телефонной книге.
+		/// </summary>
+		/// <param name="phonebook">Ссылка на телефонную книгу.</param>
+		/// <param name="abonent">Возращает найденного абонента.</param>
     public void SearchContact(ref Phonebook phonebook, out Abonent abonent)
     {
 			Console.WriteLine("Для пойска контакта введите имя или номер телефона");
@@ -190,19 +199,23 @@ namespace Task3.PhoneBook
         Request(ref phonebook);
       }
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="phonebook"></param>
+    /// <summary>
+    /// Метод для изменение данный абонента.
+    /// </summary>
+    /// <param name="phonebook">Ссылка на телефонную книгу.</param>
     public void UpdateContact(ref Phonebook phonebook) 
     {
-//      Console.WriteLine("Для пойска контакта введите имя или номер телефона");
       SearchContact(ref phonebook, out Abonent abonent);
 			if (abonent.Any())
 			{
-				phonebook.Uppdate(abonent);
+				phonebook.Update(abonent);
       }
     }
+    /// <summary>
+    /// Таймер для вызова сохранений каждую минуту.
+    /// </summary>
+    /// <param name="Timer">Таймер</param>
+		/// <param name="phonebook">Ссылка на телефонную книгу.</param>
     private void TimerTick(TimeSpan Timer, ref Phonebook phonebook)
     {
 			Timer = Timer.Subtract(new TimeSpan(0, 0, 1, 0));

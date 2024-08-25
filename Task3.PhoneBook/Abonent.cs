@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace Task3.PhoneBook
 {
-	/// <summary>
-	/// Abonent - Класс Абонент представляет собой будуйщий экземпляр контанкта в телефонной книге
-	/// </summary> 
-	internal struct Abonent
+/// <summary>
+/// Abonent - Класс Абонент представляет собой будуйщий экземпляр контанкта в телефонной книге
+/// </summary> 
+  internal struct Abonent
   {
-    private long number;
-    private string name;
-    private string numberStr;
+    #region Поля и свойства
 
-    /// <summary>
-    /// Номер телефна в числовом значении
-    /// </summary>
+    private long number;   
+/// <summary>
+/// Номер телефна в числовом значении.
+/// </summary>
     public long Number
     {
       get
@@ -45,10 +44,11 @@ namespace Task3.PhoneBook
 					this.NumberStr = "Номер телефона не найден";
 				}
       }
-    }
-    /// <summary>
-    /// Имя абонента
-    /// </summary>
+    }        
+    private string name;
+/// <summary>
+/// Имя абонента.
+/// </summary>
     public string Name
     {
       get
@@ -66,7 +66,7 @@ namespace Task3.PhoneBook
       {
         if (string.IsNullOrEmpty(value))
         {
-          this.name = "Аноним";
+          throw new ArgumentNullException("Имя абонента не должно быть пустым");
         }
         else
         {
@@ -75,9 +75,10 @@ namespace Task3.PhoneBook
 
       }
     }
-    /// <summary>
-    /// Номер абонента в строке
-    /// </summary>
+    private string numberStr;
+/// <summary>
+/// Номер абонента в строке.
+/// </summary>
 		public string NumberStr
 		{
 			get
@@ -103,10 +104,13 @@ namespace Task3.PhoneBook
 				}
 			}
 		}
-    /// <summary>
-    /// Проверка заполненности анкеты для пополнения списка контактов
-    /// </summary>
-    /// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+    #endregion
+    #region Методы
+
+/// <summary>
+/// Проверка заполненности анкеты для пополнения списка контактов
+/// </summary>
+/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
     public bool Any()
     {
       if ((Number != 0 && Number != -1) || !string.IsNullOrEmpty(Name))
@@ -115,11 +119,11 @@ namespace Task3.PhoneBook
       }
       else { return false; }
     }
-    /// <summary>
-    /// Метод для изменения номера телефона в вид как спраавочнике
-    /// </summary>
-    /// <param name="Number">Номер телефона в числовом занчении</param>
-    /// <returns>Возвращает номер телефона в строков ввиде, как в справочнике</returns>
+/// <summary>
+/// Метод для изменения номера телефона в вид как спраавочнике
+/// </summary>
+/// <param name="Number">Номер телефона в числовом занчении</param>
+/// <returns>Возвращает номер телефона в строков ввиде, как в справочнике</returns>
     private string PhoneType(long Number)
     {
       string NumberStr;
@@ -146,11 +150,11 @@ namespace Task3.PhoneBook
       }
       return NumberStr;
     }
-		/// <summary>
-		/// Определение длины номера телефона
-		/// </summary>
-		/// <param name="Number">Номер телефона в числовом занчении</param>
-		/// <returns>Длиину номера телефоа</returns>
+/// <summary>
+/// Определение длины номера телефона
+/// </summary>
+/// <param name="Number">Номер телефона в числовом занчении</param>
+/// <returns>Длиину номера телефоа</returns>
 		private int Length(long Number)
     {
       int i = 0;
@@ -161,5 +165,6 @@ namespace Task3.PhoneBook
       } while (Number > 0);
       return i;
     }
+    #endregion
   }
 }

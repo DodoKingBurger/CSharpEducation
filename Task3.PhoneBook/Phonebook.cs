@@ -15,22 +15,24 @@ namespace Task3.PhoneBook
   internal class Phonebook
   {
     private static Phonebook instance;
-    /// <summary>
-    /// Список Аббонетов.
-    /// </summary>
+    #region Поля и свойства
+
+/// <summary>
+/// Список Аббонетов.
+/// </summary>
     private List<Abonent> Contact;
-    /// <summary>
-    /// Путь к файлу со списком аббонентов
-    /// </summary>
+/// <summary>
+/// Путь к файлу со списком аббонентов.
+/// </summary>
     private string path;
+    #endregion
+    #region Методы
 
-
-    #region Открытый функционал
     /// <summary>
-    /// Метод для добавления абонента в телефонный справочник
+    /// Метод для добавления абонента в телефонный справочник.
     /// </summary>
-    /// <param name="abonent">Экземпляр структуры абонент</param>
-    /// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+    /// <param name="abonent">Экземпляр структуры абонент.</param>
+    /// <returns>true, если процесс прошел без ошибок, иначе false.</returns>
     public bool Add(Abonent abonent)
     {
       for (int i = 0; i < this.Contact.Count; i++)
@@ -44,12 +46,12 @@ namespace Task3.PhoneBook
       this.Contact.Add(abonent);
       return true;
     }
-		/// <summary>
-		/// Метод для удаления абонента из телефонного справочника
-		/// </summary>
-		/// <param name="abonent">Экземпляр структуры абонент</param>
-		/// <returns></returns>
-		public bool Delete(Abonent abonent)
+    /// <summary>
+    /// Метод для удаления абонента из телефонного справочника.
+    /// </summary>
+    /// <param name="abonent">Экземпляр структуры абонент.</param>
+    /// <returns>true, если процесс прошел без ошибок, иначе false.</returns>
+    public bool Delete(Abonent abonent)
     {
 			if (this.Contact.Any())
 			{
@@ -70,11 +72,11 @@ namespace Task3.PhoneBook
         return false;
 			}
     }
-    /// <summary>
-    /// Метод для обновления данный найденного абонента
-    /// </summary>
-    /// <param name="abonent">Изменяймый абонент</param>
-    public void Uppdate(Abonent abonent)
+/// <summary>
+/// Метод для изменения данный переданного абонента.
+/// </summary>
+/// <param name="abonent">Переданный абонент.</param>
+    public void Update(Abonent abonent)
 		{
       Console.WriteLine("Изменить Имя - 1\nИзменить номер телефона - 2\n");
       string request = Console.ReadLine();
@@ -112,7 +114,7 @@ namespace Task3.PhoneBook
 								else
 								{
 									Console.WriteLine("Новые данные не являются номером");
-                  Uppdate(abonent);
+                  Update(abonent);
                 }
               }
             }
@@ -121,19 +123,19 @@ namespace Task3.PhoneBook
 				else
 				{
 					Console.WriteLine("Запрос пуст");
-					Uppdate(abonent);
+					Update(abonent);
         }
       }
       else
       {
         Console.WriteLine("Неизвестная операция! Возвращаемся в\n");
-        Uppdate(abonent);
+        Update(abonent);
       }
     }
-		/// <summary>
-		/// Метод для сохранения списка в фаил phonebook.txt
-		/// </summary>
-		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+/// <summary>
+/// Метод для сохранения списка в фаил phonebook.txt.
+/// </summary>
+/// <returns>true, если процесс прошел без ошибок, иначе false.</returns>
 		public bool Save()
     {
       if (File.Exists(this.path))
@@ -146,11 +148,11 @@ namespace Task3.PhoneBook
 				return SaveProcessing();
 			}
     }
-		/// <summary>
-		/// Пойск абонента
-		/// </summary>
-		/// <param name="name">Имя искомого абонента</param>
-		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+/// <summary>
+/// Пойск абонента
+/// </summary>
+/// <param name="name">Имя искомого абонента.</param>
+/// <returns>true, если процесс прошел без ошибок, иначе false.</returns>
 		public bool SearchAbonent(string name, out Abonent abonent)
     {
       abonent = new Abonent();
@@ -175,11 +177,11 @@ namespace Task3.PhoneBook
 				return false;
 			}
 		}
-		/// <summary>
-		/// Пойск абонента
-		/// </summary>
-		/// <param name="number">Номер искомого абонента</param>
-		/// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+/// <summary>
+/// Пойск абонента.
+/// </summary>
+/// <param name="number">Номер искомого абонента.</param>
+/// <returns>true, если процесс прошел без ошибок, иначе false.</returns>
 		public bool SearchAbonent(long number, out Abonent abonent)
     {
       abonent = new Abonent();
@@ -203,11 +205,9 @@ namespace Task3.PhoneBook
         return false;
 			}
 		}
-    #endregion
-    #region Внутренние методы
-    /// <summary>
-    /// Открытие/создания телефонной книги
-    /// </summary>
+/// <summary>
+/// Открытие/создания телефонной книги.
+/// </summary>
     private void OpenPhoneBook()
     {
       try
@@ -228,9 +228,9 @@ namespace Task3.PhoneBook
         Console.WriteLine("Exception: " + e.Message);
       } 
     }
-		/// <summary>
-		/// Считывания коллекции абонентов из файла
-		/// </summary>
+/// <summary>
+/// Считывания коллекции абонентов из файла.
+/// </summary>
     private void ReadPhoneBook()
     {
       string line;
@@ -251,10 +251,10 @@ namespace Task3.PhoneBook
 			Contact = contact;
 			srt.Close();
 		}
-    /// <summary>
-    /// Метод для записи в фаил коллекцию абонентов
-    /// </summary>
-    /// <returns>true, если процесс прошел без ошибок, иначе false</returns>
+/// <summary>
+/// Метод для записи в фаил коллекцию абонентов.
+/// </summary>
+/// <returns>true, если процесс прошел без ошибок, иначе false.</returns>
     private bool SaveProcessing()
     {
       if (this.Contact.Any())
@@ -278,9 +278,10 @@ namespace Task3.PhoneBook
     }
     #endregion
     #region Конструкторы
-    /// <summary>
-    /// Конструктор для создания телефонной книги и запрос пути к файлу .exe
-    /// </summary>
+
+/// <summary>
+/// Конструктор для создания телефонной книги и запрос пути к файлу .exe.
+/// </summary>
     public Phonebook()
     {        
       //var exePath = Environment.CurrentDirectory;
