@@ -21,6 +21,7 @@ namespace Task3.PhoneBook
 /// Список Аббонетов.
 /// </summary>
     private List<Abonent> Contact;
+
 /// <summary>
 /// Путь к файлу со списком аббонентов.
 /// </summary>
@@ -46,6 +47,7 @@ namespace Task3.PhoneBook
       this.Contact.Add(abonent);
       return true;
     }
+
     /// <summary>
     /// Метод для удаления абонента из телефонного справочника.
     /// </summary>
@@ -72,6 +74,7 @@ namespace Task3.PhoneBook
         return false;
 			}
     }
+
 /// <summary>
 /// Метод для изменения данный переданного абонента.
 /// </summary>
@@ -132,6 +135,7 @@ namespace Task3.PhoneBook
         Update(abonent);
       }
     }
+
 /// <summary>
 /// Метод для сохранения списка в фаил phonebook.txt.
 /// </summary>
@@ -148,6 +152,7 @@ namespace Task3.PhoneBook
 				return SaveProcessing();
 			}
     }
+
 /// <summary>
 /// Пойск абонента
 /// </summary>
@@ -177,6 +182,7 @@ namespace Task3.PhoneBook
 				return false;
 			}
 		}
+
 /// <summary>
 /// Пойск абонента.
 /// </summary>
@@ -205,6 +211,7 @@ namespace Task3.PhoneBook
         return false;
 			}
 		}
+
 /// <summary>
 /// Открытие/создания телефонной книги.
 /// </summary>
@@ -228,6 +235,7 @@ namespace Task3.PhoneBook
         Console.WriteLine("Exception: " + e.Message);
       } 
     }
+
 /// <summary>
 /// Считывания коллекции абонентов из файла.
 /// </summary>
@@ -251,6 +259,7 @@ namespace Task3.PhoneBook
 			Contact = contact;
 			srt.Close();
 		}
+
 /// <summary>
 /// Метод для записи в фаил коллекцию абонентов.
 /// </summary>

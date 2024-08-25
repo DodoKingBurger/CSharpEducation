@@ -20,6 +20,7 @@ namespace Task3.PhoneBook
       program.TimerTick(Timer,ref phoneBook);
       program.Request(ref phoneBook);
 		}
+
 		/// <summary>
 		/// Вызов главного меню
 		/// </summary>
@@ -65,6 +66,7 @@ namespace Task3.PhoneBook
 				Request(ref phonebook);
 			}
     }
+
 		/// <summary>
 		/// Запись нового контакта в коллекцию абонентов
 		/// </summary>
@@ -132,6 +134,7 @@ namespace Task3.PhoneBook
 				SaveContact(ref phonebook);
       }
 		}
+
 		/// <summary>
 		/// Метод для удаление контакта из переданного списка.
 		/// </summary>
@@ -155,6 +158,7 @@ namespace Task3.PhoneBook
         Console.WriteLine("Данные об абонненте пусты");
       }
     }
+
 		/// <summary>
 		/// Метод для пойска абонента в телефонной книге.
 		/// </summary>
@@ -199,6 +203,7 @@ namespace Task3.PhoneBook
         Request(ref phonebook);
       }
 		}
+
     /// <summary>
     /// Метод для изменение данный абонента.
     /// </summary>
@@ -211,6 +216,7 @@ namespace Task3.PhoneBook
 				phonebook.Update(abonent);
       }
     }
+
     /// <summary>
     /// Таймер для вызова сохранений каждую минуту.
     /// </summary>
