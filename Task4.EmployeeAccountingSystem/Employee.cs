@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Task4.EmployeeAccountingSystem
 {
 	/// <summary>
-	/// Базовый класс для сотрудников.
+	/// Сотрудник.
 	/// </summary>
 	internal abstract class Employee
 	{
@@ -16,7 +16,7 @@ namespace Task4.EmployeeAccountingSystem
 		private string name;
 
 		/// <summary>
-		/// Имя струдика.
+		/// Имя сотрудника.
 		/// </summary>
 		public string Name
 		{
@@ -26,8 +26,8 @@ namespace Task4.EmployeeAccountingSystem
 			}
 			set
 			{
-				if (string.IsNullOrEmpty(value)) 
-					throw new ArgumentNullException("Имя не задано, какой то у вас плохой учет сотрудников");
+				if (string.IsNullOrEmpty(value))
+					throw new ArgumentException("Имя не задано, какой то у вас плохой учет сотрудников");
 				else
 					this.name = value;
 			}

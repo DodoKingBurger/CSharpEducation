@@ -11,10 +11,12 @@ namespace Task4.EmployeeAccountingSystem
 	/// </summary>
 	internal class FullTimeEmployee : Employee
 	{
+		#region Базовый класс
+
 		public override decimal CalculateSalary()
 		{
 			return BaseSalary;
 		}
-
+		#endregion
 	}
 }

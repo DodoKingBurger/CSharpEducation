@@ -11,10 +11,14 @@ namespace Task4.EmployeeAccountingSystem
 	/// </summary>
 	internal class PartTimeEmployee : Employee
 	{
+		#region  Поля и свойства.
+
 		/// <summary>
 		/// Сколько отработал сотрудник.
 		/// </summary>
-		float HoursWorked;
+		private float HoursWorked;
+		#endregion
+		#region Базовый класс
 
 		public override decimal CalculateSalary()
 		{
@@ -24,5 +28,6 @@ namespace Task4.EmployeeAccountingSystem
 			else
 				return (BaseSalary / 176) * (decimal)HoursWorked;
 		}
+		#endregion
 	}
 }
