@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "Task1.csproj", "{C3E687C0-E173-4E04-A5DD-62C95DDBE3EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "Task1\Task1.csproj", "{C3E687C0-E173-4E04-A5DD-62C95DDBE3EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.ConsoleGameXO", "..\Task2.ConsoleGameXO\Task2.ConsoleGameXO.csproj", "{D978A7A9-BC34-4509-9929-5FBC133B07D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.ConsoleGameXO", "Task2.ConsoleGameXO\Task2.ConsoleGameXO.csproj", "{D978A7A9-BC34-4509-9929-5FBC133B07D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3.PhoneBook", "..\Task3.PhoneBook\Task3.PhoneBook.csproj", "{DCE9D915-E539-45A8-8C12-2F6D41D72FF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3.PhoneBook", "Task3.PhoneBook\Task3.PhoneBook.csproj", "{DCE9D915-E539-45A8-8C12-2F6D41D72FF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
