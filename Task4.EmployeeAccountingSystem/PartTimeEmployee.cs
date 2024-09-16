@@ -18,6 +18,7 @@ namespace Task4.EmployeeAccountingSystem
 		/// </summary>
 		private float HoursWorked;
 		#endregion
+
 		#region Базовый класс
 
 		public override decimal CalculateSalary()
@@ -27,6 +28,18 @@ namespace Task4.EmployeeAccountingSystem
 				throw new ArgumentException("Как будто он не работал");
 			else
 				return (BaseSalary / 176) * (decimal)HoursWorked;
+		}
+		#endregion
+
+		#region Конструкторы
+
+		/// <summary>
+		/// Рождается новый сотрудник с почасовой зарпалтой.
+		/// </summary>
+		/// <param name="name">Имя сотрудника.</param>
+		/// <param name="salary">Зарпалата за месяц.</param>
+		public PartTimeEmployee(string name, decimal salary) : base(name, salary)
+		{
 		}
 		#endregion
 	}

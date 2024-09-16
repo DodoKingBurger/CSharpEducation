@@ -18,5 +18,17 @@ namespace Task4.EmployeeAccountingSystem
 			return BaseSalary;
 		}
 		#endregion
+
+		#region Конструкторы
+
+		/// <summary>
+		/// Рождается новый сотрудник с фиксированной зарпалтой.
+		/// </summary>
+		/// <param name="name">Имя сотрудника.</param>
+		/// <param name="salary">Зарпалата за месяц.</param>
+		public FullTimeEmployee(string name, decimal salary) : base(name, salary)
+		{
+		}
+		#endregion
 	}
 }

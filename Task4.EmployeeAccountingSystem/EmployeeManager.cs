@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace Task4.EmployeeAccountingSystem
 {
 	/// <summary>
-	/// Сотрудник.
+	/// Менеджер.
 	/// </summary>
 	internal class EmployeeManager : IEmployeeManager<Employee>
 	{
@@ -17,8 +17,14 @@ namespace Task4.EmployeeAccountingSystem
 		/// <summary>
 		/// Список сотрудников.
 		/// </summary>
-		private List<Employee> listEmployees;
+		private Dictionary<int,Employee> listEmployees;
+
+		/// <summary>
+		/// ID под которым можно записать сотрудника в список.
+		/// </summary>
+		private int ID = 0;
 		#endregion
+
 		#region Методы
 
 		public void Add(Employee employee) 
@@ -27,68 +33,59 @@ namespace Task4.EmployeeAccountingSystem
 				throw new ArgumentNullException("Был передан работник с незаполненными данными");
 			else
 			{
-				if (listEmployees.Any())
+				if (this.listEmployees.Any())
 				{
-					if (!listEmployees.Contains(employee))
-						listEmployees.Add(employee);
+					if (!this.listEmployees.ContainsValue(employee))
+					{
+						this.listEmployees.Add(this.ID,employee);
+						employee.ID = this.ID;
+						this.ID++;
+					}
 					else
 						throw new ArgumentException("Такой сотрудник уже есть в списке");
 				}
 				else
 				{
-					listEmployees.Add(employee);
+					this.listEmployees.Add(this.ID, employee);
+					employee.ID = this.ID;
+					this.ID++;
 				}
 			}
 		}
 
 		public Employee Get(string name)
 		{
-
-			foreach (var employee in listEmployees)
+			if (this.listEmployees.Any())
 			{
-				if (employee.Name.ToLower() == name.ToLower())
-					return employee;
+				foreach (var employee in this.listEmployees)
+				{
+					if (employee.Value.Name.ToLower() == name.ToLower())
+						return employee.Value;
+				}
+				throw new ArgumentException("Сотрудник не найден");
 			}
-			throw new ArgumentException("Сотрудник не найден");
+			else
+				throw new ArgumentNullException("Список пуст");
 		}
 
-		public void Update(Employee employee)
+		public void Update(Employee employeeUp)
 		{
-			if (listEmployees.Contains(employee))
+			if (this.listEmployees.Any())
 			{
-				foreach(var employeer  in ListEmployees)
+				foreach(var employeer  in this.listEmployees)
 				{
-					if(employeer == employee)
+					if(employeer.Key == employeeUp.ID)
 					{
-						Console.WriteLine(
-						"Какие данные поменять\n" +
-						"1. Изменить имя сотрудника\n" +
-						"2. Изменить зарплату сотруднику\n" +
-						"Выберите действие: ");
-						if (int.TryParse(Console.ReadLine(), out int request))
-						{
-							switch (request)
-							{
-								case 1:
-									employee.Name = Console.ReadLine();
-									break;
-								case 2:
-									if (decimal.TryParse(Console.ReadLine(), out decimal salary))
-										employee.BaseSalary = salary;
-									break;
-								default:
-									throw new ArgumentException("Такого выбора не существует");
-							}
-						}
-						else
-							throw new InvalidOperationException("Такой операции не существует");
+						this.listEmployees[employeer.Value.ID] = employeeUp;
+						return;
 					}
 				}
 			}
 			else
-				throw new ArgumentException("Сотрудник не найден");
+				throw new ArgumentNullException("Список пуст");
 		}
 		#endregion
+
 		#region Конструктор
 
 		/// <summary>
@@ -96,7 +93,7 @@ namespace Task4.EmployeeAccountingSystem
 		/// </summary>
 		public EmployeeManager()
 		{
-			ListEmployees = new List<Employee>();
+			this.listEmployees = new Dictionary<int, Employee>();
 		}
 		#endregion
 	}

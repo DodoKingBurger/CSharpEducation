@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 namespace Task4.EmployeeAccountingSystem
 {
 	/// <summary>
-	/// Интерфейс, для управления данными сотрудник.
+	/// Менеджер который управления данными сотрудников.
 	/// </summary>
 	/// <typeparam name="T">Сотрудник - Employee.</typeparam>
-	internal interface IEmployeeManager<T> 
+	internal interface IEmployeeManager<T> where T : Employee
 	{
 
 		/// <summary>
 		/// Добавить сотрудника
 		/// </summary>
-		/// <param name="employee">Сотрудник, наследник класса Employee.</param>
+		/// <param name="employee">Сотрудник.</param>
 		void Add(T employee);
 
 		/// <summary>
 		/// Пойск, сотрудника по имени.
 		/// </summary>
 		/// <param name="name">Имя, искомого сотрудника.</param>
-		/// <returns>Сотрудника, наследник класса Employee.</returns>
+		/// <returns>Сотрудника.</returns>
 		T Get(string name);
 
 		/// <summary>

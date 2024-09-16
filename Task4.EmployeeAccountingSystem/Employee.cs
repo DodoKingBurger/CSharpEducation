@@ -48,32 +48,60 @@ namespace Task4.EmployeeAccountingSystem
 			{
 				if (value < 0)
 					throw new ArgumentException("Никто не будет работать с отрицательной зарплатой");
-				else if(value == 0) 
+				else if (value == 0)
 					throw new ArgumentNullException("Никто не будет работать без зарплатой");
-					this.baseSakary = value;
+				this.baseSakary = value;
+			}
+		}
+
+		private int id;
+
+		/// <summary>
+		/// ID сотрудника в список.
+		/// </summary>
+		public int ID
+		{
+			get { return this.id; }
+			set
+			{
+				if (value >= 0)
+					this.id = value;
+				else
+					throw new ArgumentException("ID не может быть отрицательным");
 			}
 		}
 		#endregion
+
 		#region Методы
 
+		/// <summary>
+		/// Метод, который будет возвращать зарплату сотрудника.
+		/// </summary>
+		/// <returns></returns>
 		public abstract decimal CalculateSalary();
+
+		/// <summary>
+		/// Создает копию, выполняя неглубокое копирование обьекта.
+		/// </summary>
+		/// <returns>Возвращает копию объекта.</returns>
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
 		#endregion
+
 		#region Конструктор
 
 		/// <summary>
 		/// Создает сотрудника для чего запрашивает имя и его заработную плату.
 		/// </summary>
+		/// <param name="name">Имя сотрудника.</param>
+		/// <param name="salary">Месячная зарплата.</param>
+		/// <param name="id">id под которым хотят записать сотрудника.</param>
 		public Employee(string name, decimal salary)
 		{
-			if (!string.IsNullOrEmpty(name))
-				this.name = name;
-			else
-				throw new ArgumentNullException("Вы ввели некоректное имя");
-
-			if (salary != null)
-				BaseSalary = salary;
-			else
-				throw new ArgumentNullException("Вы ввели нечисло");
+			Name = name;
+			BaseSalary = salary;
 		}
 		#endregion
 	}
