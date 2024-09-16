@@ -361,6 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/.vs/slnx.sqlite
-/.vs/CSharpEducation/v17/.wsuo
-/.vs/VSWorkspaceState.json
+/Task2.ConsoleGameXO/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Task1/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Task3.PhoneBook/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache

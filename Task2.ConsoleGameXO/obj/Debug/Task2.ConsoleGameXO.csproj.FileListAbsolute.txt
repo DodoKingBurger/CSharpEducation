@@ -1,8 +1,0 @@
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\bin\Debug\Task2.ConsoleGameXO.exe.config
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\bin\Debug\Task2.ConsoleGameXO.exe
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\bin\Debug\Task2.ConsoleGameXO.pdb
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\obj\Debug\Task2.ConsoleGameXO.csproj.AssemblyReference.cache
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\obj\Debug\Task2.ConsoleGameXO.csproj.SuggestedBindingRedirects.cache
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\obj\Debug\Task2.ConsoleGameXO.csproj.CoreCompileInputs.cache
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\obj\Debug\Task2.ConsoleGameXO.exe
-C:\Users\sarki\source\repos\CSharpEducation\Task2.ConsoleGameXO\obj\Debug\Task2.ConsoleGameXO.pdb
