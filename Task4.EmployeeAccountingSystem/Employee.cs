@@ -32,6 +32,7 @@ namespace Task4.EmployeeAccountingSystem
 					this.name = value;
 			}
 		}
+
 		private decimal baseSakary;
 
 		/// <summary>
@@ -45,19 +46,16 @@ namespace Task4.EmployeeAccountingSystem
 			}
 			set
 			{
-				if (value <= 0)
+				if (value < 0)
 					throw new ArgumentException("Никто не будет работать с отрицательной зарплатой");
-				else
+				else if(value == 0) 
+					throw new ArgumentNullException("Никто не будет работать без зарплатой");
 					this.baseSakary = value;
 			}
 		}
 		#endregion
 		#region Методы
 
-		/// <summary>
-		/// Абстрактный метод CalculateSalary(), который будет возвращать зарплату сотрудника.
-		/// </summary>
-		/// <returns>Зарплата сотрудника.</returns>
 		public abstract decimal CalculateSalary();
 		#endregion
 		#region Конструктор
@@ -65,15 +63,17 @@ namespace Task4.EmployeeAccountingSystem
 		/// <summary>
 		/// Создает сотрудника для чего запрашивает имя и его заработную плату.
 		/// </summary>
-		public Employee()
+		public Employee(string name, decimal salary)
 		{
-			Console.Write("Введите имя сотрудника: ");
-			Name = Console.ReadLine();
-			Console.Write("Введите месячную зарплату у сотрудника: ");
-			if (decimal.TryParse(Console.ReadLine(), out decimal Salary))
-				BaseSalary = Salary;
+			if (!string.IsNullOrEmpty(name))
+				this.name = name;
 			else
-				throw new ArgumentException("Вы ввели нечисло");
+				throw new ArgumentNullException("Вы ввели некоректное имя");
+
+			if (salary != null)
+				BaseSalary = salary;
+			else
+				throw new ArgumentNullException("Вы ввели нечисло");
 		}
 		#endregion
 	}

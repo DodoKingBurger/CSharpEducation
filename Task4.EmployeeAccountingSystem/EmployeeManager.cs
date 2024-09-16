@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace Task4.EmployeeAccountingSystem
 {
 	/// <summary>
-	/// Интерфейс, для управления данными сотрудник
+	/// Сотрудник.
 	/// </summary>
 	internal class EmployeeManager : IEmployeeManager<Employee>
 	{
@@ -17,55 +17,9 @@ namespace Task4.EmployeeAccountingSystem
 		/// <summary>
 		/// Список сотрудников.
 		/// </summary>
-		private List<Employee> ListEmployees;
+		private List<Employee> listEmployees;
 		#endregion
 		#region Методы
-
-		/// <summary>
-		/// Вызов главного меню.
-		/// </summary>
-		/// <exception cref="ArgumentException">Запрос был даже не числом!</exception>
-		public void MainMenu()
-		{
-			Console.Write(
-				"1. Добавить полного сотрудника\n" +
-				"2. Добавить частичного сотрудника\n" +
-				"3. Получить информацию о сотруднике\n" +
-				"4. Обновить данные сотрудника\n" +
-				"5. Выйти\n" +
-				"Выберите действие: ");
-			if (int.TryParse(Console.ReadLine(), out int request))
-			{
-				switch (request) 
-				{
-					case 1:
-						var FullEmployee = new FullTimeEmployee();
-						Add(FullEmployee);
-						break;
-					case 2:
-						var PartEmployee = new PartTimeEmployee();
-						Add(PartEmployee);
-						break;
-					case 3:
-						Console.Write("Введите имя искомого сотрудника: ");
-						var employee = Get(Console.ReadLine());
-						Console.Write($"Имя: {employee.Name}\nЗарплата: {employee.CalculateSalary()}\n");
-						break;
-					case 4:
-						Update(Get(Console.ReadLine()));
-						break;
-					case 5:
-						return;
-					default:
-						Console.WriteLine("Таких команд не знаем делать ниче не будем ");
-						break;
-				}
-				MainMenu();
-			}
-			else
-				throw new ArgumentException("Запрос неясен");
-			Console.ReadLine();
-		}
 
 		public void Add(Employee employee) 
 		{
@@ -73,16 +27,16 @@ namespace Task4.EmployeeAccountingSystem
 				throw new ArgumentNullException("Был передан работник с незаполненными данными");
 			else
 			{
-				if (ListEmployees.Any())
+				if (listEmployees.Any())
 				{
-					if (!ListEmployees.Contains(employee))
-						ListEmployees.Add(employee);
+					if (!listEmployees.Contains(employee))
+						listEmployees.Add(employee);
 					else
 						throw new ArgumentException("Такой сотрудник уже есть в списке");
 				}
 				else
 				{
-					ListEmployees.Add(employee);
+					listEmployees.Add(employee);
 				}
 			}
 		}
@@ -90,7 +44,7 @@ namespace Task4.EmployeeAccountingSystem
 		public Employee Get(string name)
 		{
 
-			foreach (var employee in ListEmployees)
+			foreach (var employee in listEmployees)
 			{
 				if (employee.Name.ToLower() == name.ToLower())
 					return employee;
@@ -100,11 +54,7 @@ namespace Task4.EmployeeAccountingSystem
 
 		public void Update(Employee employee)
 		{
-			if (employee == null) 
-				throw new ArgumentNullException("Был передан работник с незаполненными данными");
-			if (ListEmployees.Any())
-				throw new ArgumentNullException("Список пуст! Добавьте сотрудников");
-			if (ListEmployees.Contains(employee))
+			if (listEmployees.Contains(employee))
 			{
 				foreach(var employeer  in ListEmployees)
 				{
@@ -114,7 +64,7 @@ namespace Task4.EmployeeAccountingSystem
 						"Какие данные поменять\n" +
 						"1. Изменить имя сотрудника\n" +
 						"2. Изменить зарплату сотруднику\n" +
-						"Выберите действие:");
+						"Выберите действие: ");
 						if (int.TryParse(Console.ReadLine(), out int request))
 						{
 							switch (request)
