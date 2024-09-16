@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.ConsoleGameXO", "Task
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3.PhoneBook", "Task3.PhoneBook\Task3.PhoneBook.csproj", "{DCE9D915-E539-45A8-8C12-2F6D41D72FF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4.EmployeeAccountingSystem", "Task4.EmployeeAccountingSystem\Task4.EmployeeAccountingSystem.csproj", "{29F7ABF2-AC8A-4928-AFD7-F4F3F8493740}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DCE9D915-E539-45A8-8C12-2F6D41D72FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE9D915-E539-45A8-8C12-2F6D41D72FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE9D915-E539-45A8-8C12-2F6D41D72FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F7ABF2-AC8A-4928-AFD7-F4F3F8493740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F7ABF2-AC8A-4928-AFD7-F4F3F8493740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F7ABF2-AC8A-4928-AFD7-F4F3F8493740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F7ABF2-AC8A-4928-AFD7-F4F3F8493740}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
