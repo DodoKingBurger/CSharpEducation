@@ -1,7 +1,0 @@
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\bin\Debug\Task5.Exception.exe.config
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\bin\Debug\Task5.Exception.exe
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\bin\Debug\Task5.Exception.pdb
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\obj\Debug\Task5.Exception.csproj.AssemblyReference.cache
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\obj\Debug\Task5.Exception.csproj.CoreCompileInputs.cache
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\obj\Debug\Task5.Exception.exe
-C:\Users\Пользователь\source\repos\CSharpEducation\Task5.Exception\obj\Debug\Task5.Exception.pdb
