@@ -361,6 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Task2.ConsoleGameXO/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-/Task1/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-/Task3.PhoneBook/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
