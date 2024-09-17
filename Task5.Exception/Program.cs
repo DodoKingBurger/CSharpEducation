@@ -11,7 +11,60 @@ namespace Task5.Exception
 		static void Main(string[] args)
 		{
 			UserManager userManager = new UserManager();
-			userManager.MainMenu();
+			MainMenu(userManager);
+		}
+		/// <summary>
+		/// Вызов главного меню.
+		/// </summary>
+		/// <exception cref="ArgumentException">Запрос был даже не числом!</exception>
+		static public void MainMenu(UserManager userManager)
+		{
+			Console.Write(
+				"1. Добавить пользователя\n" +
+				"2. Удаление пользователя\n" +
+				"3. Найти пользователя\n" +
+				"4. Получить информацию о всех пользователях\n" +
+				"5. Выйти\n" +
+				"Выберите действие: ");
+			if (int.TryParse(Console.ReadLine(), out int request))
+			{
+				switch (request)
+				{
+					case 1:
+						Console.Write("Введите Id: ");
+						int.TryParse(Console.ReadLine(), out int IDAdd);
+						Console.Write("Введите Имя: ");
+						string Name = Console.ReadLine();
+						Console.Write("Введите почту: ");
+						string Email = Console.ReadLine();
+						var user = new User(IDAdd, Name, Email);
+						userManager.AddUser(user);
+						break;
+					case 2:
+						Console.Write("Введите Id: ");
+						int.TryParse(Console.ReadLine(), out int IDRemove);
+						userManager.RemoveUser(IDRemove);
+						break;
+					case 3:
+						Console.Write("Введите ID искомого сотрудника: ");
+						int.TryParse(Console.ReadLine(), out int IDGet);
+						var userGet = userManager.GetUser(IDGet);
+						Console.WriteLine($"ID: {userGet.Id}\nName: {userGet.Name}\nEmail: {userGet.Email}\n__________________");
+						break;
+					case 4:
+						userManager.ListUsers();
+						break;
+					case 5:
+						return;
+					default:
+						Console.WriteLine("Таких команд не знаем делать ниче не буду\n__________________");
+						break;
+				}
+				MainMenu(userManager);
+			}
+			else
+				throw new ArgumentException("Запрос неясен");
+			Console.ReadLine();
 		}
 	}
 }

@@ -16,67 +16,14 @@ namespace Task5.Exception
 		/// </summary>
 		private List<User> users;
 		#endregion
-		#region Методы
 
-		/// <summary>
-		/// Вызов главного меню.
-		/// </summary>
-		/// <exception cref="ArgumentException">Запрос был даже не числом!</exception>
-		public void MainMenu()
-		{
-			Console.Write(
-				"1. Добавить пользователя\n" +
-				"2. Удаление пользователя\n" +
-				"3. Найти пользователя\n" +
-				"4. Получить информацию о всех пользователях\n" +
-				"5. Выйти\n" +
-				"Выберите действие: ");
-			if (int.TryParse(Console.ReadLine(), out int request))
-			{
-				switch (request)
-				{
-					case 1:
-						Console.Write("Введите Id: ");
-						int.TryParse(Console.ReadLine(),out int IDAdd);
-						Console.Write("Введите Имя: ");
-						string Name = Console.ReadLine();
-						Console.Write("Введите почту: ");
-						string Email = Console.ReadLine();
-						var user = new User(IDAdd, Name,Email);
-						AddUser(user);
-						break;
-					case 2:
-						Console.Write("Введите Id: ");
-						int.TryParse(Console.ReadLine(), out int IDRemove);
-						RemoveUser(IDRemove);
-						break;
-					case 3:
-						Console.Write("Введите ID искомого сотрудника: ");
-						int.TryParse(Console.ReadLine(), out int IDGet);
-						var userGet = GetUser(IDGet);
-						Console.WriteLine($"ID: {userGet.Id}\nName: {userGet.Name}\nEmail: {userGet.Email}\n__________________");
-						break;
-					case 4:
-						ListUsers();
-						break;
-					case 5:
-						return;
-					default:
-						Console.WriteLine("Таких команд не знаем делать ниче не буду\n__________________");
-						break;
-				}
-				MainMenu();
-			}
-			else
-				throw new ArgumentException("Запрос неясен");
-			Console.ReadLine();
-		}
+		#region Методы
 
 		/// <summary>
 		/// Добавляет пользователя в список.
 		/// </summary>
 		/// <param name="user">Добавляемый пользователь.</param>
-		void AddUser(User user)
+		public void AddUser(User user)
 		{
 			if (user == null)
 				throw new ArgumentNullException("У переданного пользователь нет данных");
@@ -136,7 +83,7 @@ namespace Task5.Exception
 		}
 
 		/// <summary>
-		/// Выводит всех пользователей в консоль.
+		/// Вывести всех пользователей в консоль.
 		/// </summary>
 		public void ListUsers()
 		{
@@ -148,10 +95,11 @@ namespace Task5.Exception
 			}
 		}
 		#endregion
+
 		#region Конструкторы
 
 		/// <summary>
-		/// Конструктор менеджера, нужен для работ с пользователями.  
+		/// Создать, менеджера для работ с пользователями.  
 		/// </summary>
 		public UserManager() 
 		{

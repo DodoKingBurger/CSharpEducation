@@ -9,6 +9,7 @@ namespace Task5.Exception
 	internal class User
 	{
 		#region Поля и свойства
+
 		private int id;
 
 		/// <summary>
@@ -56,10 +57,11 @@ namespace Task5.Exception
 			}
 		}
 		#endregion
+
 		#region Конструкторы
 
 		/// <summary>
-		/// Конструктор для создания экземпляра пользователя.
+		/// Создать, пользователя.
 		/// </summary>
 		/// <param name="Id">Под каким ID будет создан пользователь.</param>
 		/// <param name="Name">Имя пользователя.</param>
