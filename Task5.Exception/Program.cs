@@ -39,16 +39,19 @@ namespace Task5.Exception
 						string Email = Console.ReadLine();
 						var user = new User(IDAdd, Name, Email);
 						userManager.AddUser(user);
+						Console.WriteLine("Пользователь добавлен успешно!\n__________________");
 						break;
 					case 2:
 						Console.Write("Введите Id: ");
 						int.TryParse(Console.ReadLine(), out int IDRemove);
 						userManager.RemoveUser(IDRemove);
+						Console.WriteLine("Пользователь удален успешно!\n__________________");
 						break;
 					case 3:
 						Console.Write("Введите ID искомого сотрудника: ");
 						int.TryParse(Console.ReadLine(), out int IDGet);
 						var userGet = userManager.GetUser(IDGet);
+						Console.WriteLine("Пользователь возвращен из списка успешно!\n__________________");
 						Console.WriteLine($"ID: {userGet.Id}\nName: {userGet.Name}\nEmail: {userGet.Email}\n__________________");
 						break;
 					case 4:

@@ -36,7 +36,6 @@ namespace Task5.Exception
 						throw new UserAlreadyExistsException("Пользователь уже существует");
 				}
 				users.Add(user);
-				Console.WriteLine("Пользователь добавлен успешно!\n__________________");
 			}
 			else
 				throw new UserAlreadyExistsException("Пользователь уже существует");
@@ -55,7 +54,6 @@ namespace Task5.Exception
 				if (usery.Id == id)
 				{
 					users.Remove(usery);
-					Console.WriteLine("Пользователь удален успешно!\n__________________");
 					return;
 				}
 			}
@@ -75,7 +73,6 @@ namespace Task5.Exception
 			{
 				if (usery.Id == id)
 				{
-					Console.WriteLine("Пользователь возвращен из списка успешно!\n__________________");
 					return usery;
 				}
 			}
