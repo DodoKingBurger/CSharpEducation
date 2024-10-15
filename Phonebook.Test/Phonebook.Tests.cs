@@ -15,12 +15,6 @@ namespace Phonebook.Test
 			this.phonebook = new Phonebook();
 		}
 
-		[TearDown]
-		public void TearDown()
-		{
-			this.phonebook.ClearListSubscriber();
-		}
-
 		[OneTimeTearDown]
 		public void OneTimeTearDown()
 		{
