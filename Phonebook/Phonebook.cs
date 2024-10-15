@@ -99,14 +99,23 @@ public class Phonebook
     this.subscribers.Remove(subscriberToDelete);
   }
 
-  #endregion
+	/// <summary>
+	/// Очистить телефонную книгу.
+	/// </summary>
+	/// <param name="subscriberToDelete">Абонент, которого нужно удалить из книги.</param>
+	public void ClearListSubscriber()
+	{
+		this.subscribers.Clear();
+	}
 
-  #region Конструкторы
+	#endregion
 
-  /// <summary>
-  /// Конструктор.
-  /// </summary>
-  public Phonebook()
+	#region Конструкторы
+
+	/// <summary>
+	/// Конструктор.
+	/// </summary>
+	public Phonebook()
       : this(new List<Subscriber>())
   {
   }
