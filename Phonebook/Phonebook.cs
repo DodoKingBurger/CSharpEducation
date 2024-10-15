@@ -103,7 +103,7 @@ public class Phonebook
 	/// Очистить телефонную книгу.
 	/// </summary>
 	/// <param name="subscriberToDelete">Абонент, которого нужно удалить из книги.</param>
-	public void ClearListSubscriber()
+	internal void ClearListSubscriber()
 	{
 		this.subscribers.Clear();
 	}
