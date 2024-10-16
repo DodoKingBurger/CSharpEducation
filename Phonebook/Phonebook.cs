@@ -1,4 +1,6 @@
-﻿namespace Phonebook;
+﻿using System.Net.Http.Headers;
+
+namespace Phonebook;
 
 /// <summary>
 /// Телефонная книга.
@@ -23,7 +25,15 @@ public class Phonebook
   /// <returns>Найденный абонент в книге.</returns>
   public Subscriber GetSubscriber(Guid id)
   {
-    return this.subscribers.Single(s => s.Id == id);
+    if (this.subscribers.Any())
+    {
+      if (id != Guid.Empty)
+        return this.subscribers.Single(s => s.Id == id);
+      else
+        throw new ArgumentNullException($"Передан пустой {id.GetType}");
+    }
+    else
+      throw new NullReferenceException("Список подписчиков пуст");
   }
 
   /// <summary>
@@ -32,7 +42,12 @@ public class Phonebook
   /// <returns>Список всех абонентов.</returns>
   public IEnumerable<Subscriber> GetAll()
   {
-    return this.subscribers;
+    if (this.subscribers.Any())
+    {
+      return this.subscribers;
+    }
+    else
+      throw new NullReferenceException("Список пуст");
   }
 
   /// <summary>
@@ -42,12 +57,18 @@ public class Phonebook
   /// <exception cref="InvalidOperationException">Возникает, если абонент уже существует в книге.</exception>
   public void AddSubscriber(Subscriber subscriber)
   {
-    if (this.subscribers.Contains(subscriber))
-      throw new InvalidOperationException("Unable to add subscriber. Subscriber exists");
+    if(subscriber != null)
+    {
 
-    PhoneNumberValidator.ValidateList(subscriber.PhoneNumbers);
+      if (this.subscribers.Contains(subscriber)&& this.subscribers.Where(s => s.Id == subscriber.Id).ToList().Count != 0)
+        throw new InvalidOperationException("Unable to add subscriber. Subscriber exists");
+      
+      PhoneNumberValidator.ValidateList(subscriber.PhoneNumbers);
 
-    this.subscribers.Add(subscriber);
+      this.subscribers.Add(subscriber);
+    }
+    else
+      throw new ArgumentNullException($"Подписчик {subscriber} не заполнен");
   }
 
   /// <summary>
@@ -57,13 +78,27 @@ public class Phonebook
   /// <param name="number">Добавляемый номер абонента.</param>
   public void AddNumberToSubscriber(Subscriber subscriber, PhoneNumber number)
   {
-    var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
+    if (this.subscribers.Any())
     {
-        number
-    };
-    var subscriberWithNewNumber = new Subscriber(subscriber.Id, subscriber.Name, newNumbers);
+      if (!string.IsNullOrEmpty(number.Number))
+      {
+        if (this.subscribers.Contains(subscriber))
+        {
+          var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
+          {
+              number
+          };
+          var subscriberWithNewNumber = new Subscriber(subscriber.Id, subscriber.Name, newNumbers);
 
-    this.UpdateSubscriber(subscriber, subscriberWithNewNumber);
+          this.UpdateSubscriber(subscriber, subscriberWithNewNumber);
+        }
+        else
+          throw new ArgumentException($"Такой подподписчик {subscriber.Name} отсутсвует");
+      }
+      else throw new ArgumentException("Новый номер телефона не указан");
+    }
+    else
+      throw new NullReferenceException("Список пуст");
   }
 
   /// <summary>
@@ -73,9 +108,27 @@ public class Phonebook
   /// <param name="newName">Новое имя абонента.</param>
   public void RenameSubscriber(Subscriber subscriber, string newName)
   {
-    var subscriberWithNewName = new Subscriber(subscriber.Id, newName, subscriber.PhoneNumbers);
-
-    this.UpdateSubscriber(subscriber, subscriberWithNewName);
+    if (subscriber != null)
+    {
+      if (this.subscribers.Any())
+      {
+        if (this.subscribers.Contains(subscriber))
+        {
+          if (!string.IsNullOrEmpty(newName))
+          {
+            var subscriberWithNewName = new Subscriber(subscriber.Id, newName, subscriber.PhoneNumbers);
+            this.UpdateSubscriber(subscriber, subscriberWithNewName);
+          }
+          else
+            throw new ArgumentException("Новое имя не указанно");
+        }
+        else throw new ArgumentException($"Такого {subscriber.Name} нету в списке");
+      }
+      else
+        throw new NullReferenceException("Список пуст");
+    }
+    else
+      throw new ArgumentNullException("Подписчик пуст");
   }
 
   /// <summary>
@@ -85,9 +138,26 @@ public class Phonebook
   /// <param name="newSubscriber">Новый абонент.</param>
   public void UpdateSubscriber(Subscriber oldSubscriber, Subscriber newSubscriber)
   {
-    var foundSubscriber = this.GetSubscriber(oldSubscriber.Id);
-    int foundSubscriberPlace = this.subscribers.FindIndex(s => s.Id == foundSubscriber.Id);
-    this.subscribers[foundSubscriberPlace] = newSubscriber;
+    if(oldSubscriber != null && newSubscriber != null)
+    {
+      if (this.subscribers.Any())
+      {
+        if (oldSubscriber.Id != newSubscriber.Id)
+          throw new ArgumentException($"{oldSubscriber.Name} и у {newSubscriber.Name} не совпадают ID");
+        if (this.subscribers.Contains(oldSubscriber))
+        {
+          var foundSubscriber = this.GetSubscriber(oldSubscriber.Id);
+          int foundSubscriberPlace = this.subscribers.FindIndex(s => s.Id == foundSubscriber.Id);
+          this.subscribers[foundSubscriberPlace] = newSubscriber;
+        }
+        else
+          throw new ArgumentException($"Подписчик {oldSubscriber.Name} отсутсвует в списке");
+      }
+      else
+        throw new NullReferenceException("Список пуст");
+    }
+    else
+      throw new ArgumentNullException("Данные изменяймого подписчика утеряны");
   }
 
   /// <summary>
@@ -96,8 +166,17 @@ public class Phonebook
   /// <param name="subscriberToDelete">Абонент, которого нужно удалить из книги.</param>
   public void DeleteSubscriber(Subscriber subscriberToDelete)
   {
-    this.subscribers.Remove(subscriberToDelete);
-  }
+    if (this.subscribers.Any())
+    {
+      if (subscriberToDelete == null)
+        throw new NullReferenceException("Подписчик пустой");
+      if (!this.subscribers.Contains(subscriberToDelete))
+        throw new ArgumentException("Данный подписчик отсутсвует в списке");
+      this.subscribers.Remove(subscriberToDelete);
+    }
+		else
+			throw new NullReferenceException("Список пуст");
+	}
 
 	/// <summary>
 	/// Очистить телефонную книгу.

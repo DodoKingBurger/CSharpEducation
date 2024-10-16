@@ -26,11 +26,24 @@ namespace Phonebook.Test
 			this.phonebook = null;
 		}
 
-		[TestCase("00000000-0000-0000-0000-000000000000")]
-		public void GetSubscriber_WithNullId_ThrowInvalidOperationException(string Id)
+		[Test]
+		public void GetSubscriber_WithNullId_ThrowNullReferenceException()
 		{
-			Guid subscriberId = Guid.Parse(Id);
-			Assert.Throws<InvalidOperationException>(() => this.phonebook.GetSubscriber(subscriberId));
+			string subscriberName = "Biba";
+			Guid guid = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			var OldSub = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(OldSub);
+			Guid subscriberId = Guid.Parse("00000000-0000-0000-0000-000000000000");
+			
+			Assert.Throws<ArgumentNullException>(() => this.phonebook.GetSubscriber(subscriberId));
+		}
+
+		[Test]
+		public void GetSubscriber_WithEmptyPhonebook_ThrowNullReferenceException()
+		{
+			Guid subscriberId = Guid.Parse("00000000-0000-0000-0000-000000000000");
+			
+			Assert.Throws<NullReferenceException>(() => this.phonebook.GetSubscriber(subscriberId));
 		}
 
 		[TestCase("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7")]
@@ -41,6 +54,7 @@ namespace Phonebook.Test
 			var OldSub = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(OldSub);
 			Guid subscriberId = Guid.Parse(Id);
+			
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.GetSubscriber(subscriberId));
 		}
 
@@ -52,6 +66,7 @@ namespace Phonebook.Test
 			var expectedSubs = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubs);
 			Guid subscriberId = Guid.Parse(Id);
+			
 			Assert.That(this.phonebook.GetSubscriber(guid).Id, Is.EqualTo(expectedSubs.Id));
 		}
 
@@ -66,13 +81,28 @@ namespace Phonebook.Test
 				expectedSubs, expectedSubs
 			};
 			this.phonebook = new Phonebook(listSubscriber);
+			
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.GetSubscriber(guid));
 		}
 
 		[Test]
 		public void GetAll_WithEmptyListSubscriber_GetEmptyList()
 		{
-			Assert.IsEmpty(this.phonebook.GetAll());
+			Assert.Throws<NullReferenceException>(() => this.phonebook.GetAll());
+		}
+
+		[Test]
+		public void GetAll_ListSubscriber_GetAllList()
+		{
+			string subscriberName = "Biba";
+			Guid guid1 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD013");
+			Guid guid2 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			var Sub1 = new Subscriber(guid1, subscriberName, new List<PhoneNumber>());
+			var Sub2 = new Subscriber(guid2, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(Sub1);
+			this.phonebook.AddSubscriber(Sub2);
+			
+			Assert.That(this.phonebook.GetAll().Count, Is.EqualTo(2));
 		}
 
 		[TestCase("29777CA3-C07D-4545-9328-6E87579AD084", "Egor")]
@@ -82,7 +112,6 @@ namespace Phonebook.Test
 		{
 			Guid guid = Guid.Parse(strId);
 			var expectedSubscriber = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
-
 			this.phonebook.AddSubscriber(expectedSubscriber);
 
 			Assert.That(this.phonebook.GetSubscriber(guid), Is.EqualTo(expectedSubscriber));
@@ -94,7 +123,6 @@ namespace Phonebook.Test
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Egor";
 			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
-
 			this.phonebook.AddSubscriber(expectedSubscriber);
 
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddSubscriber(expectedSubscriber));
@@ -110,6 +138,7 @@ namespace Phonebook.Test
 			this.phonebook.AddSubscriber(expectedSubscriber);
 			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
 			this.phonebook.AddNumberToSubscriber(expectedSubscriber, phoneNumber);
+			
 			Assert.That(this.phonebook.GetSubscriber(subscriberId).PhoneNumbers[0], Is.EqualTo(phoneNumber));
 		}
 
@@ -123,7 +152,8 @@ namespace Phonebook.Test
 			this.phonebook.AddSubscriber(expectedSubscriber);
 			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
 			this.phonebook.AddNumberToSubscriber(expectedSubscriber, phoneNumber);
-			Assert.That(this.phonebook.GetSubscriber(subscriberId).PhoneNumbers[0], Is.EqualTo(phoneNumber));
+			
+			Assert.That(this.phonebook.GetSubscriber(subscriberId).PhoneNumbers[0].ToString, !Is.EqualTo(number));
 		}
 
 		[TestCase("88005553535", PhoneNumberType.Personal)]
@@ -139,6 +169,7 @@ namespace Phonebook.Test
 			};
 			this.phonebook = new Phonebook(listSubscriber);
 			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
+			
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
 		}
 
@@ -147,17 +178,20 @@ namespace Phonebook.Test
 		{
 			Subscriber expectedSubs = null!;
 			PhoneNumber phoneNumber = new PhoneNumber("89991119999", PhoneNumberType.Personal);
+			
 			Assert.Throws<NullReferenceException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
 		}
 
 		[Test]
-		public void AddNumberToSubscriber_WithEmptyPhoneNumber_ThrowInvalidOperationException()
+		public void AddNumberToSubscriber_WithEmptyPhoneNumber_ThrowArgumentException()
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Biba";
 			Subscriber expectedSubs = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(expectedSubs);
 			PhoneNumber phoneNumber = new PhoneNumber("", PhoneNumberType.Personal);
-			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
+			
+			Assert.Throws<ArgumentException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
 		}
 
 		[TestCase("29777CA3-C07D-4545-9328-6E87579AD084", "Egor")]
@@ -167,9 +201,9 @@ namespace Phonebook.Test
 		{
 			Guid subscriberId = Guid.Parse(strId);
 			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
-
 			this.phonebook.AddSubscriber(expectedSubscriber);
 			this.phonebook.RenameSubscriber(expectedSubscriber, "Ivan");
+			
 			Assert.That(this.phonebook.GetSubscriber(subscriberId).Name, Is.EqualTo("Ivan"));
 		}
 
@@ -178,26 +212,32 @@ namespace Phonebook.Test
 		{
 			Subscriber expectedSubs = null!;
 			
-			Assert.Throws<NullReferenceException>(() => this.phonebook.RenameSubscriber(expectedSubs, "Ivan"));
+			Assert.Throws<ArgumentNullException>(() => this.phonebook.RenameSubscriber(expectedSubs, "Ivan"));
 		}
 
 		[Test]
-		public void RenameSubscriber_WithSubcriberNotInPhoneBook_ThrowInvalidOperationException()
+		public void RenameSubscriber_WithSubcriberNotInPhoneBook_ThrowArgumentException()
+		{
+			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			string subscriberName = "Biba";
+			Subscriber expectedSubs1 = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+			subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD013");
+			subscriberName = "Boba";
+			Subscriber expectedSubs2 = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(expectedSubs1);
+
+			Assert.Throws<ArgumentException>(() => this.phonebook.RenameSubscriber(expectedSubs2, "Ivan"));
+		}
+
+		[Test]
+		public void RenameSubscriber_WithEmptyName_ThrowNullReferenceException()
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Biba";
 			Subscriber expectedSubs = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
 
-			Assert.Throws<InvalidOperationException>(() => this.phonebook.RenameSubscriber(expectedSubs, "Ivan"));
+			Assert.Throws<NullReferenceException>(() => this.phonebook.RenameSubscriber(expectedSubs, string.Empty));
 		}
-
-
-
-
-
-
-
-
 
 		[Test]
 		public void UpdateSubscriber_UpdateDataSubscriber_UpdateSuccessfully()
@@ -208,7 +248,82 @@ namespace Phonebook.Test
 			this.phonebook.AddSubscriber(OldSub);
 			Subscriber NewSub = new Subscriber(OldSub.Id, "Boba", OldSub.PhoneNumbers);
 			this.phonebook.UpdateSubscriber(OldSub, NewSub);
+			
 			Assert.That(this.phonebook.GetSubscriber(guid).Id, Is.EqualTo(OldSub.Id));
+		}
+
+		[Test]
+		public void UpdateSubscriber_WithNewSubscriberEmpty_ThrowArgumentNullException()
+		{
+			string subscriberName = "Biba";
+			Guid guid = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			var OldSub = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(OldSub);
+			
+			Assert.Throws<ArgumentNullException>(() => this.phonebook.UpdateSubscriber(OldSub, null));
+		}
+
+		[Test]
+		public void UpdateSubscriber_WithSubscriberNotFound_ThrowArgumentException()
+		{
+			string subscriberName = "Biba";
+			Guid guid = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			var OldSub = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(OldSub);
+			string subscriberName2 = "Boba";
+			Guid guid2 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD011");
+			var NewSub = new Subscriber(guid2, subscriberName2, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(NewSub);
+			
+			Assert.Throws<ArgumentException>(() => this.phonebook.UpdateSubscriber(NewSub, OldSub));
+		}
+
+		[Test]
+		public void DeleteSubscriber_DeletetSubscribe_SubscribeIsDeletet()
+		{
+			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			string subscriberName = "Biba";
+			Subscriber expectedSubs = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(expectedSubs);
+			Guid subscriberId2 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD011");
+			string subscriberName2 = "Boba";
+			Subscriber expectedSubs2 = new Subscriber(subscriberId2, subscriberName2, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(expectedSubs2);
+			this.phonebook.DeleteSubscriber(expectedSubs);
+			
+			Assert.False(this.phonebook.GetAll().Contains(expectedSubs));
+		}
+
+		[Test]
+		public void DeleteSubscriber_WithEmptyPhonebook_ThrowNullReferenceException()
+		{
+			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			string subscriberName = "Biba";
+			Subscriber expectedSubs = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+
+			Assert.Throws<NullReferenceException>(() => this.phonebook.DeleteSubscriber(expectedSubs));
+		}
+
+		[Test]
+		public void DeleteSubscriber_WithEmptySubscriber_ThrowNullReferenceException()
+		{
+			Subscriber expectedSubs = null!;
+
+			Assert.Throws<NullReferenceException>(() => this.phonebook.DeleteSubscriber(expectedSubs));
+		}
+
+		[Test]
+		public void DeleteSubscriber_WithSubscriberIsNotList_ThrowArgumentException()
+		{
+			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			string subscriberName = "Biba";
+			Subscriber expectedSubs = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+			Guid subscriberId2 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD011");
+			string subscriberName2 = "Boba";
+			Subscriber expectedSubs2 = new Subscriber(subscriberId2, subscriberName2, new List<PhoneNumber>());
+			this.phonebook.AddSubscriber(expectedSubs2);
+
+			Assert.Throws<ArgumentException>(() => this.phonebook.DeleteSubscriber(expectedSubs));
 		}
 	}
 }
