@@ -59,11 +59,11 @@ public class Phonebook
   {
     if(subscriber != null)
     {
-
       if (this.subscribers.Contains(subscriber)&& this.subscribers.Where(s => s.Id == subscriber.Id).ToList().Count != 0)
         throw new InvalidOperationException("Unable to add subscriber. Subscriber exists");
       
-      PhoneNumberValidator.ValidateList(subscriber.PhoneNumbers);
+      if(subscriber.PhoneNumbers != null)
+        PhoneNumberValidator.ValidateList(subscriber.PhoneNumbers);
 
       this.subscribers.Add(subscriber);
     }
@@ -81,8 +81,9 @@ public class Phonebook
     if (this.subscribers.Any())
     {
       if (!string.IsNullOrEmpty(number.Number))
-      {
-        if (this.subscribers.Contains(subscriber))
+      {          
+        PhoneNumberValidator.Validate(number);
+        if (this.subscribers.Single(s => s.Id == subscriber.Id).Equals(subscriber))
         {
           var newNumbers = new List<PhoneNumber>(subscriber.PhoneNumbers)
           {

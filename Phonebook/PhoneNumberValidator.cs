@@ -18,8 +18,8 @@ public static class PhoneNumberValidator
     {
       var regex = new Regex(@"^\+\d{1,3}\s?\(\d{3}\)\s?\d{3}-\d{4}$");
       var isValid = regex.IsMatch(number.Number);
-      if (isValid)
-        throw new ArgumentException("Phone number is invalid");
+      if (!isValid)
+        throw new InvalidOperationException("Phone number is invalid");
     }
     else
       throw new ArgumentNullException("Номер телефна отсутствует");

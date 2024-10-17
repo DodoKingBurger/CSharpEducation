@@ -129,35 +129,31 @@ namespace Phonebook.Test
 		}
 
 		[TestCase("88005553535", PhoneNumberType.Personal)]
-		[TestCase("460000", PhoneNumberType.Work)]
-		public void AddNumberToSubscriber_AddingPhoneNumber_SubscriberReceivesPhoneNumber(string number, PhoneNumberType numberType)
+		[TestCase("+7905443534345345345", PhoneNumberType.Work)]
+		public void AddNumberToSubscriber_NoValidingPhoneNumber_ThrowInvalidOperationException(string number, PhoneNumberType numberType)
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Egor";
 			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubscriber);
 			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
-			this.phonebook.AddNumberToSubscriber(expectedSubscriber, phoneNumber);
-			
-			Assert.That(this.phonebook.GetSubscriber(subscriberId).PhoneNumbers[0], Is.EqualTo(phoneNumber));
+
+			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddNumberToSubscriber(expectedSubscriber, phoneNumber));
 		}
 
-		[TestCase("+78005553535", PhoneNumberType.Personal)]
-		[TestCase("46-00-00", PhoneNumberType.Work)]
-		public void AddNumberToSubscriber_AddingPhoneNumberWithSpecialCharacters_SubscriberReceivesPhoneNumber(string number, PhoneNumberType numberType)
+		[TestCase("+7(800)555-3535", PhoneNumberType.Personal)]
+		public void AddNumberToSubscriber_AddingValidingPhoneNumber_SubscriberReceivesPhoneNumber(string number, PhoneNumberType numberType)
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Egor";
 			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubscriber);
 			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
-			this.phonebook.AddNumberToSubscriber(expectedSubscriber, phoneNumber);
-			
-			Assert.That(this.phonebook.GetSubscriber(subscriberId).PhoneNumbers[0].ToString, !Is.EqualTo(number));
+			phonebook.AddNumberToSubscriber(expectedSubscriber,phoneNumber);
+			Assert.That(phonebook.GetSubscriber(subscriberId).PhoneNumbers[0], Is.EqualTo(phoneNumber));
 		}
 
-		[TestCase("88005553535", PhoneNumberType.Personal)]
-		[TestCase("460000", PhoneNumberType.Work)]
+		[TestCase("+7(800)555-3535", PhoneNumberType.Personal)]
 		public void AddNumberToSubscriber_WithTwoIdenticalSubscribers_ThrowInvalidOperationException(string number, PhoneNumberType numberType)
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
@@ -183,15 +179,15 @@ namespace Phonebook.Test
 		}
 
 		[Test]
-		public void AddNumberToSubscriber_WithEmptyPhoneNumber_ThrowArgumentException()
+		public void AddNumberToSubscriber_WithEmptyPhoneNumber_ThrowArgumentNullException()
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Biba";
 			Subscriber expectedSubs = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubs);
-			PhoneNumber phoneNumber = new PhoneNumber("", PhoneNumberType.Personal);
-			
-			Assert.Throws<ArgumentException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
+		
+			Assert.Throws<ArgumentNullException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, 
+				new PhoneNumber("",PhoneNumberType.Personal)));
 		}
 
 		[TestCase("29777CA3-C07D-4545-9328-6E87579AD084", "Egor")]
