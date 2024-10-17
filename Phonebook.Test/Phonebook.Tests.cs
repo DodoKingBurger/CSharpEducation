@@ -99,14 +99,14 @@ namespace Phonebook.Test
 			Guid guid2 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			var Sub1 = new Subscriber(guid1, subscriberName, new List<PhoneNumber>());
 			var Sub2 = new Subscriber(guid2, subscriberName, new List<PhoneNumber>());
-			this.phonebook.AddSubscriber(Sub1);
-			this.phonebook.AddSubscriber(Sub2);
+			List<Subscriber> listSubcribers = new List<Subscriber>() { Sub1, Sub2 };
+			this.phonebook = new Phonebook(listSubcribers);
 			
 			Assert.That(this.phonebook.GetAll().Count, Is.EqualTo(2));
 		}
 
 		[TestCase("29777CA3-C07D-4545-9328-6E87579AD084", "Egor")]
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD014", "Ali Abu Aga Nasr")]
+		[TestCase("29777CA3-C07D-4545-9328-6E87579AD014", "Ali Abu Aga Nasral")]
 		[TestCase("29777CA3-C07D-4545-9328-6E87579AD024", "Egor Egorov")]
 		public void AddSubscriber_NewSubscriber_AddedSuccessfully(string strId, string subscriberName)
 		{
