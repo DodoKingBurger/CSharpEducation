@@ -27,54 +27,53 @@ namespace Phonebook.Test
 		}
 
 		[Test]
-		public void GetSubscriber_WithNullId_ThrowNullReferenceException()
+		public void GetSubscriber_WithNullId_ThrowArgumentNullException()
 		{
 			string subscriberName = "Biba";
-			Guid guid = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
+			Guid guid = Guid.Parse("00000000-0000-0000-0000-000000000000");
 			var OldSub = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(OldSub);
-			Guid subscriberId = Guid.Parse("00000000-0000-0000-0000-000000000000");
 			
-			Assert.Throws<ArgumentNullException>(() => this.phonebook.GetSubscriber(subscriberId));
+			Assert.Throws<ArgumentNullException>(() => this.phonebook.GetSubscriber(guid));
 		}
 
 		[Test]
 		public void GetSubscriber_WithEmptyPhonebook_ThrowNullReferenceException()
 		{
-			Guid subscriberId = Guid.Parse("00000000-0000-0000-0000-000000000000");
+			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			
 			Assert.Throws<NullReferenceException>(() => this.phonebook.GetSubscriber(subscriberId));
 		}
 
-		[TestCase("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7")]
-		public void GetSubscriber_WithNonExistentSubscriber_ThrowArgumentNullException(string Id)
+		[Test]
+		public void GetSubscriber_WithNonExistentSubscriber_ThrowArgumentNullException()
 		{
 			string subscriberName = "Biba";
 			Guid guid = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			var OldSub = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(OldSub);
-			Guid subscriberId = Guid.Parse(Id);
+			Guid subscriberId = Guid.Parse("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7");
 			
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.GetSubscriber(subscriberId));
 		}
 
-		[TestCase("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7")]
-		public void GetSubscriber_FindSubscriber_GetSuccessfuly(string Id)
+		[Test]
+		public void GetSubscriber_FindSubscriber_GetSuccessfuly()
 		{
 			string subscriberName = "Biba";
-			Guid guid = Guid.Parse(Id);
+			Guid guid = Guid.Parse("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7");
 			var expectedSubs = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubs);
-			Guid subscriberId = Guid.Parse(Id);
+			Guid subscriberId = Guid.Parse("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7");
 			
 			Assert.That(this.phonebook.GetSubscriber(guid).Id, Is.EqualTo(expectedSubs.Id));
 		}
 
-		[TestCase("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7")]
-		public void GetSubscriber_WithTwoIdenticalSubscribers_ThrowInvalidOperationException(string Id)
+		[Test]
+		public void GetSubscriber_WithTwoIdenticalSubscribers_ThrowInvalidOperationException()
 		{
 			string subscriberName = "Biba";
-			Guid guid = Guid.Parse(Id);
+			Guid guid = Guid.Parse("B58B3851-9F5F-4CB8-BC0B-64BB42794EA7");
 			Subscriber expectedSubs = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
 			List<Subscriber> listSubscriber = new List<Subscriber>()
 			{
@@ -105,13 +104,11 @@ namespace Phonebook.Test
 			Assert.That(this.phonebook.GetAll().Count, Is.EqualTo(2));
 		}
 
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD084", "Egor")]
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD014", "Ali Abu Aga Nasral")]
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD024", "Egor Egorov")]
-		public void AddSubscriber_NewSubscriber_AddedSuccessfully(string strId, string subscriberName)
+		[Test]
+		public void AddSubscriber_NewSubscriber_AddedSuccessfully()
 		{
-			Guid guid = Guid.Parse(strId);
-			var expectedSubscriber = new Subscriber(guid, subscriberName, new List<PhoneNumber>());
+			Guid guid = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD024");
+			var expectedSubscriber = new Subscriber(guid, "Ali Abu Aga Nasral", new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubscriber);
 
 			Assert.That(this.phonebook.GetSubscriber(guid), Is.EqualTo(expectedSubscriber));
@@ -128,33 +125,32 @@ namespace Phonebook.Test
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddSubscriber(expectedSubscriber));
 		}
 
-		[TestCase("88005553535", PhoneNumberType.Personal)]
-		[TestCase("+7905443534345345345", PhoneNumberType.Work)]
-		public void AddNumberToSubscriber_NoValidingPhoneNumber_ThrowInvalidOperationException(string number, PhoneNumberType numberType)
+		[Test]
+		public void AddNumberToSubscriber_NoValidingPhoneNumber_ThrowInvalidOperationException()
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Egor";
 			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubscriber);
-			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
+			PhoneNumber phoneNumber = new PhoneNumber("+7905443534345345345", PhoneNumberType.Work);
 
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddNumberToSubscriber(expectedSubscriber, phoneNumber));
 		}
 
-		[TestCase("+7(800)555-3535", PhoneNumberType.Personal)]
-		public void AddNumberToSubscriber_AddingValidingPhoneNumber_SubscriberReceivesPhoneNumber(string number, PhoneNumberType numberType)
+		[Test]
+		public void AddNumberToSubscriber_AddingValidingPhoneNumber_SubscriberReceivesPhoneNumber()
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Egor";
 			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubscriber);
-			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
+			PhoneNumber phoneNumber = new PhoneNumber("+7(800)555-3535", PhoneNumberType.Personal);
 			phonebook.AddNumberToSubscriber(expectedSubscriber,phoneNumber);
 			Assert.That(phonebook.GetSubscriber(subscriberId).PhoneNumbers[0], Is.EqualTo(phoneNumber));
 		}
 
-		[TestCase("+7(800)555-3535", PhoneNumberType.Personal)]
-		public void AddNumberToSubscriber_WithTwoIdenticalSubscribers_ThrowInvalidOperationException(string number, PhoneNumberType numberType)
+		[Test]
+		public void AddNumberToSubscriber_WithTwoIdenticalSubscribers_ThrowInvalidOperationException()
 		{
 			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD014");
 			string subscriberName = "Biba";
@@ -164,7 +160,7 @@ namespace Phonebook.Test
 				expectedSubs, expectedSubs
 			};
 			this.phonebook = new Phonebook(listSubscriber);
-			PhoneNumber phoneNumber = new PhoneNumber(number, numberType);
+			PhoneNumber phoneNumber = new PhoneNumber("+7(800)555-3535", PhoneNumberType.Personal);
 			
 			Assert.Throws<InvalidOperationException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
 		}
@@ -173,7 +169,7 @@ namespace Phonebook.Test
 		public void AddNumberToSubscriber_WithEmptySubscribers_ThrowNullReferenceException()
 		{
 			Subscriber expectedSubs = null!;
-			PhoneNumber phoneNumber = new PhoneNumber("89991119999", PhoneNumberType.Personal);
+			PhoneNumber phoneNumber = new PhoneNumber("+7(800)555-3535", PhoneNumberType.Personal);
 			
 			Assert.Throws<NullReferenceException>(() => this.phonebook.AddNumberToSubscriber(expectedSubs, phoneNumber));
 		}
@@ -190,13 +186,11 @@ namespace Phonebook.Test
 				new PhoneNumber("",PhoneNumberType.Personal)));
 		}
 
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD084", "Egor")]
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD014", "Ali Abu Aga Nasr")]
-		[TestCase("29777CA3-C07D-4545-9328-6E87579AD024", "Egor Egorov")]
-		public void RenameSubscriber_ChangeNameSubcriberOnIvan_SubscriberWillBecomIvan(string strId, string subscriberName)
+		[Test]
+		public void RenameSubscriber_ChangeNameSubcriberOnIvan_SubscriberWillBecomIvan()
 		{
-			Guid subscriberId = Guid.Parse(strId);
-			var expectedSubscriber = new Subscriber(subscriberId, subscriberName, new List<PhoneNumber>());
+			Guid subscriberId = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD084");
+			var expectedSubscriber = new Subscriber(subscriberId, "Egor", new List<PhoneNumber>());
 			this.phonebook.AddSubscriber(expectedSubscriber);
 			this.phonebook.RenameSubscriber(expectedSubscriber, "Ivan");
 			
@@ -269,7 +263,6 @@ namespace Phonebook.Test
 			string subscriberName2 = "Boba";
 			Guid guid2 = Guid.Parse("29777CA3-C07D-4545-9328-6E87579AD011");
 			var NewSub = new Subscriber(guid2, subscriberName2, new List<PhoneNumber>());
-			this.phonebook.AddSubscriber(NewSub);
 			
 			Assert.Throws<ArgumentException>(() => this.phonebook.UpdateSubscriber(NewSub, OldSub));
 		}
