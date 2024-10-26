@@ -22,7 +22,13 @@ public class PhoneNumber
   /// <param name="type">Тип номера телефона.</param>
   public PhoneNumber(string number, PhoneNumberType type)
   {
-    this.Number = number;
-    this.Type = type;
+    if(!string.IsNullOrEmpty(number))
+      this.Number = number;
+    else
+      throw new ArgumentNullException(nameof(number));
+		if (!string.IsNullOrEmpty(number)) 
+      this.Type = type;
+    else
+      throw new ArgumentNullException(nameof(type));
   }
 }
